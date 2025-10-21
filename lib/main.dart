@@ -1,4 +1,4 @@
-import 'package:b2_people/home_page.dart';
+import 'package:b2_people/splash_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'B2 People',
       theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
-      home: const HomePage(),
+      home: const SplashPage(),
     );
   }
 }
