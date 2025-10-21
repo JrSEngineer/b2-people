@@ -10,7 +10,7 @@ O objetivo dessa aplicação é abordar de forma prática os assuntos:
 - Design Patterns;
 - Gerenciamento de estado.
 
-Para uma melhor compreensão dos temas abordados, e uma visualização do impacto no emprego das técnicas corretas, o código será dividido em branches, para uma melhor compreensão.
+Para uma melhor compreensão dos temas abordados, e uma visualização do impacto no emprego das técnicas, o código será dividido em branches, para uma melhor compreensão.
 
 A branch `main` terá apenas a versão inicial do código. Novas funcionalidades serão adicionadas nas branches:
 
