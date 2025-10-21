@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatefulWidget {
@@ -8,6 +10,18 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(
+      const Duration(seconds: 3),
+      () {
+        Navigator.of(context).pushReplacementNamed("home");
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(

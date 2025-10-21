@@ -1,3 +1,4 @@
+import 'package:b2_people/home_page.dart';
 import 'package:b2_people/splash_page.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +16,9 @@ class MyApp extends StatelessWidget {
       title: 'B2 People',
       theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
       home: const SplashPage(),
+      routes: {
+        "home": (_) => HomePage(),
+      },
     );
   }
 }
