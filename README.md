@@ -14,7 +14,7 @@ Para uma melhor compreensão dos temas abordados, e uma visualização do impact
 
 A branch `main` terá apenas a versão inicial do código. Novas funcionalidades serão adicionadas nas branches:
 
-- mvvm_arch (Refatorando app inicial para versão com arquitetura MVVM)
+- [mvvm_arch](https://github.com/JrSEngineer/b2-people/tree/mvvm_arch)
 
 O conteúdo dessas branches virá acompanhado de explicações a respeito das mudanças realizadas e novas features (funções).
 
