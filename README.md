@@ -1,24 +1,52 @@
 # B2-People
-Caso de estudo de consumo de API, arquitetura, gerenciamento de projeto e boas práticas.
+## mvvm_arch
+#### Refatoração do app inicial para versão com arquitetura MVVM
 
-### Este app é designado para as plataformas Android e IOs.
+Usando este modelo arquitetural serão realizadas as seguintes modificações em relação à abordagem anterior:
 
-O objetivo dessa aplicação é abordar de forma prática os assuntos:
+Introdução à Orientação a Objetos, com uso de abstrações, encapsulamentos e herança, além da criação das camadas da arquitetura:
 
-- Programação Orientada a Objetos;
-- Arquitetura;
-- Design Patterns;
-- Gerenciamento de estado.
+## Models
+    User
+    Profile
+    Address
+    
+## Views
+    HomePage
+    UserPage
 
-Para uma melhor compreensão dos temas abordados, e uma visualização do impacto no emprego das técnicas, o código será dividido em branches, para uma melhor compreensão.
+## ViewModels
+    HomeController
 
-A branch `main` terá apenas a versão inicial do código. Novas funcionalidades serão adicionadas nas branches:
+## Data 
+    Camada para consumo e tratamento de dados externos (API, storage).
+    HomeRepositoryImpl
 
-- mvvm_arch (Refatorando app inicial para versão com arquitetura MVVM)
-- dev 1
-- dev 2
 
-O conteúdo dessas branches virá acompanhado de explicações a respeito das mudanças realizadas e novas features (funções).
+## Outras Melhorias
+
+#### Estrutura de pastas:
+
+    lib/
+    └── src/
+        ├── data/
+        ├── models/
+        ├── modules/
+        └── view_models/
+        └── views/
+    tests/
+
+#### Introdução de:
+- Modularização;
+- Injeção de dependências;
+- Emprego do Strategy e Repository patterns;
+- Componentização de Widgets;
+- Testes de unidade;
+- Testes de widget;
+- Testes E2E.
+
+#### :test_tube: Cobertura de testes em 75.7%
+
 
 Para ver o projeto na prática, clone o repositório usando:
 
@@ -35,4 +63,3 @@ Recupere as dependências do projeto com:
 E pronto! Basta rodar a aplicação:
 
 `flutter run`
-
