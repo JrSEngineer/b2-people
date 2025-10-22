@@ -5,6 +5,7 @@ class LoadingRenderingStrategy implements HomeRenderingStrategy {
   @override
   Widget render(BuildContext context) {
     return Scaffold(
+      key: const Key('loading'),
       appBar: AppBar(
         backgroundColor: Color(0xff5109F9),
         title: Text(

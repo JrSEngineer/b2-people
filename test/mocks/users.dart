@@ -102,7 +102,7 @@ final user2Mock = UserModel(
   gender: UserGender.male,
   profile: ProfileModel(
     email: 'robert.jenkins@example.com',
-    profileImage: 'https://randomuser.me/api/portraits/men/46.jpg',
+    profileImage: 'https://randomuser.me/api/portraits/men/75.jpg',
     profileUsername: 'bluedolphin21',
     phone: '(212) 593-4455',
     cell: '(917) 540-7712',

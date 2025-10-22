@@ -79,6 +79,7 @@ class MaleProfileStrategy implements UserProfileStrategy {
                 ),
                 Spacer(),
                 ElevatedButton(
+                  key: const Key('bottom_sheet_button'),
                   onPressed: () => userInfoBottomSheet(context, user),
                   child: Text(
                     'Mais Informações',

@@ -52,6 +52,7 @@ class BodyRenderingStrategy implements HomeRenderingStrategy {
             ),
             Expanded(
               child: ListView.builder(
+                key: const Key('user_list'),
                 controller: _homeController.scrollController,
                 physics: const BouncingScrollPhysics(),
                 shrinkWrap: true,
@@ -65,6 +66,7 @@ class BodyRenderingStrategy implements HomeRenderingStrategy {
                       onTap: () {
                         Modular.to.pushNamed('../users/', arguments: user);
                       },
+                      key: const Key('user_tile'),
                     );
                   } else {
                     if (_homeController.usersList.isEmpty) {

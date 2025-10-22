@@ -7,6 +7,7 @@ userInfoBottomSheet(BuildContext context, UserModel user) {
     context: context,
     builder: (_) {
       return BottomSheet(
+        key: const Key('bottom_sheet'),
         onClosing: () {},
         builder: (context) {
           return ListView(
