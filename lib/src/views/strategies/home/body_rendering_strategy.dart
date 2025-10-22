@@ -1,6 +1,6 @@
-import 'package:b2_people/src/models/user_model.dart';
 import 'package:b2_people/src/view_models/home/home_controller.dart';
 import 'package:b2_people/src/views/strategies/home/home_rendering_strategy.dart';
+import 'package:b2_people/src/views/widgets/user_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -60,41 +60,8 @@ class BodyRenderingStrategy implements HomeRenderingStrategy {
                   if (i < _homeController.usersList.length) {
                     final user = _homeController.usersList[i];
 
-                    final icon = switch (user.gender) {
-                      UserGender.female => Icons.woman,
-                      UserGender.male => Icons.man,
-                    };
-
-                    final iconColor = switch (user.gender) {
-                      UserGender.female => Colors.pinkAccent,
-                      UserGender.male => Colors.blueAccent,
-                    };
-
-                    return ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: Container(
-                        height: 36,
-                        width: 36,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          image: DecorationImage(
-                            fit: BoxFit.fill,
-                            image: NetworkImage(
-                              user.profile.profileImage,
-                            ),
-                          ),
-                        ),
-                      ),
-                      title: Text(
-                        user.fullName,
-                      ),
-                      subtitle: Text(
-                        user.profile.email,
-                      ),
-                      trailing: Icon(
-                        icon,
-                        color: iconColor,
-                      ),
+                    return UserTile(
+                      user: user,
                       onTap: () {
                         Modular.to.pushNamed('../users/', arguments: user);
                       },
