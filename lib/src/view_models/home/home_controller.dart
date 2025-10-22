@@ -1,13 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:b2_people/src/data/interfaces/ihome_repository.dart';
 import 'package:b2_people/src/models/user_model.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class HomeController extends ChangeNotifier {
-  HomeController(this._dio);
+  HomeController(this._repository);
 
-  final Dio _dio;
+  final IHomeRepository _repository;
 
   List<UserModel> usersList = [];
   bool isLoading = false;
@@ -18,32 +18,22 @@ class HomeController extends ChangeNotifier {
   ValueNotifier<String> error = ValueNotifier('');
 
   Future<void> fetchUsers() async {
-    try {
-      isLoading = true;
-      notifyListeners();
+    isLoading = true;
+    notifyListeners();
 
-      page = 1;
+    final (users, errorMessage) = await _repository.getUsers('myusers', page, results);
 
-      final response = await _dio.get('https://randomuser.me/api/?page=$page&results=$results&seed=myusers');
-
-      final users = response.data['results'] as List;
-
-      for (var item in users) {
-        var userMap = item as Map<String, dynamic>;
-        final user = UserModel.fromMap(userMap);
-
-        usersList.add(user);
-      }
-
-      notifyListeners();
-    } on DioException catch (_) {
-      error.value = 'Ops! Algum erro ocorreu durante a busca.';
-    } catch (_) {
-      error.value = 'Um erro inesperado ocorreu.';
-    } finally {
+    if (errorMessage != null) {
+      error.value = errorMessage;
       isLoading = false;
       notifyListeners();
+      return;
     }
+
+    usersList.addAll(users!);
+
+    isLoading = false;
+    notifyListeners();
   }
 
   final scrollController = ScrollController();
@@ -52,16 +42,16 @@ class HomeController extends ChangeNotifier {
     if (scrollController.position.maxScrollExtent == scrollController.offset) {
       page++;
 
-      final response = await _dio.get('https://randomuser.me/api/?page=$page&results=$results&seed=myusers');
+      final (users, errorMessage) = await _repository.getUsers('myusers', page, results);
 
-      final users = response.data['results'] as List;
-
-      for (var item in users) {
-        var userMap = item as Map<String, dynamic>;
-        final user = UserModel.fromMap(userMap);
-
-        usersList.add(user);
+      if (errorMessage != null) {
+        error.value = errorMessage;
+        isLoading = false;
+        notifyListeners();
+        return;
       }
+
+      usersList.addAll(users!);
 
       notifyListeners();
     }

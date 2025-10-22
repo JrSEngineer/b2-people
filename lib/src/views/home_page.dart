@@ -4,8 +4,8 @@ import 'package:b2_people/src/view_models/home/home_controller.dart';
 import 'package:b2_people/src/views/strategies/home/body_rendering_strategy.dart';
 import 'package:b2_people/src/views/strategies/home/home_body.dart';
 import 'package:b2_people/src/views/strategies/home/loading_rendering_strategy.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,8 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late final _dio = Dio();
-  late final _homeController = HomeController(_dio);
+  final _homeController = Modular.get<HomeController>();
 
   @override
   void initState() {

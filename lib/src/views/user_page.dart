@@ -20,6 +20,7 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
   Widget _body() {
     final userPageBody = UserPageBody();
+
     switch (widget.user.gender) {
       case UserGender.female:
         userPageBody.setProfileStrategy(FemaleProfileStrategy(widget.user));

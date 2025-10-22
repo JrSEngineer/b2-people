@@ -1,0 +1,32 @@
+import 'package:b2_people/src/data/interfaces/ihome_repository.dart';
+import 'package:b2_people/src/models/user_model.dart';
+import 'package:dio/dio.dart';
+
+class HomeRepositoryImpl implements IHomeRepository {
+  HomeRepositoryImpl(this._dio);
+
+  final Dio _dio;
+
+  @override
+  Future<(List<UserModel>?, String?)> getUsers(String seed, int page, int results) async {
+    try {
+      final List<UserModel> usersList = [];
+
+      final response = await _dio.get('https://randomuser.me/api/?page=$page&results=$results&seed=$seed');
+      final users = response.data['results'] as List;
+
+      for (var item in users) {
+        var userMap = item as Map<String, dynamic>;
+        final user = UserModel.fromMap(userMap);
+
+        usersList.add(user);
+      }
+
+      return (usersList, null);
+    } on DioException catch (_) {
+      return (null, 'Ops! Algum erro ocorreu durante a busca.');
+    } catch (e) {
+      return (null, 'Um erro inesperado ocorreu.');
+    }
+  }
+}
