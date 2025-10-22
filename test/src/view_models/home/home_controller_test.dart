@@ -1,22 +1,22 @@
+import 'package:b2_people/src/data/interfaces/ihome_repository.dart';
+import 'package:b2_people/src/data/repositories/home_repository_impl.dart';
 import 'package:b2_people/src/models/user_model.dart';
 import 'package:b2_people/src/view_models/home/home_controller.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../mocks/users.dart';
 
-class DioMock extends Mock implements DioMixin {}
+class HomeRepositoryMock extends Mock implements HomeRepositoryImpl {}
 
 void main() {
-  final String path = 'https://randomuser.me/api/?page=1&results=20&seed=myusers';
-  late Dio dio;
+  late IHomeRepository repository;
   late HomeController controller;
 
   setUpAll(
     () {
-      dio = DioMock();
-      controller = HomeController(dio);
+      repository = HomeRepositoryMock();
+      controller = HomeController(repository);
     },
   );
 
@@ -26,15 +26,7 @@ void main() {
       test(
         'fail with DioException',
         () async {
-          when(() => dio.get(path)).thenThrow(
-            DioException(
-              response: Response(
-                statusCode: 400,
-                requestOptions: RequestOptions(),
-              ),
-              requestOptions: RequestOptions(),
-            ),
-          );
+          when(() => repository.getUsers('myusers', 1, 20)).thenAnswer((_) async => (<UserModel>[], 'Ops! Algum erro ocorreu durante a busca.'));
 
           await controller.fetchUsers();
 
@@ -44,7 +36,7 @@ void main() {
       test(
         'fail with different kind of Exception',
         () async {
-          when(() => dio.get(path)).thenThrow(Exception());
+          when(() => repository.getUsers('myusers', 1, 20)).thenAnswer((_) async => (<UserModel>[], 'Um erro inesperado ocorreu.'));
 
           await controller.fetchUsers();
 
@@ -54,13 +46,7 @@ void main() {
       test(
         'pass successfully filling up users list',
         () async {
-          when(() => dio.get(path)).thenAnswer(
-            (_) async => Response(
-              requestOptions: RequestOptions(),
-              statusCode: 200,
-              data: userMapsResultsMock,
-            ),
-          );
+          when(() => repository.getUsers('myusers', 1, 20)).thenAnswer((_) async => (usersList, null));
 
           await controller.fetchUsers();
 

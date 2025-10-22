@@ -1,3 +1,7 @@
+import 'package:b2_people/src/models/address_model.dart';
+import 'package:b2_people/src/models/profile_model.dart';
+import 'package:b2_people/src/models/user_model.dart';
+
 final userMapsResultsMock = {
   "results": [
     {
@@ -71,3 +75,45 @@ final userMapsResultsMock = {
   ],
   "info": {"seed": "56d27f4a53bd5441", "results": 1, "page": 1, "version": "1.4"},
 };
+
+final user1Mock = UserModel(
+  id: 'd912a4cc-52b3-4c92-bc21-9c37a7c937f1',
+  fullName: 'Laura Stevens',
+  gender: UserGender.female,
+  profile: ProfileModel(
+    email: 'laura.stevens@example.com',
+    profileImage: 'https://randomuser.me/api/portraits/women/68.jpg',
+    profileUsername: 'silverfox912',
+    phone: '(312) 555-2389',
+    cell: '(412) 777-9087',
+  ),
+  address: AddressModel(
+    naturallity: 'US',
+    postcode: '90210',
+    city: 'Beverly Hills',
+    state: 'California',
+    country: 'United States',
+  ),
+);
+
+final user2Mock = UserModel(
+  id: 'e53f7c1a-1472-4a79-a8f0-d83b82e81a2c',
+  fullName: 'Robert Jenkins',
+  gender: UserGender.male,
+  profile: ProfileModel(
+    email: 'robert.jenkins@example.com',
+    profileImage: 'https://randomuser.me/api/portraits/men/46.jpg',
+    profileUsername: 'bluedolphin21',
+    phone: '(212) 593-4455',
+    cell: '(917) 540-7712',
+  ),
+  address: AddressModel(
+    naturallity: 'US',
+    postcode: '10022',
+    city: 'New York',
+    state: 'New York',
+    country: 'United States',
+  ),
+);
+
+final usersList = [user1Mock, user2Mock];
