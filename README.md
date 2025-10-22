@@ -14,7 +14,7 @@ Para uma melhor compreensão dos temas abordados, e uma visualização do impact
 
 A branch `main` terá apenas a versão inicial do código. Novas funcionalidades serão adicionadas nas branches:
 
-- dev
+- mvvm_arch (Refatorando app inicial para versão com arquitetura MVVM)
 - dev 1
 - dev 2
 
