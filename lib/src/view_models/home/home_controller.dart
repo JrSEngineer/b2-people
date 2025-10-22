@@ -5,22 +5,26 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class HomeController extends ChangeNotifier {
+  HomeController(this._dio);
+
+  final Dio _dio;
+
   List<UserModel> usersList = [];
   bool isLoading = false;
 
   int page = 1;
   int results = 20;
 
-  Future<void> fetchUsers(BuildContext context) async {
+  ValueNotifier<String> error = ValueNotifier('');
+
+  Future<void> fetchUsers() async {
     try {
       isLoading = true;
       notifyListeners();
 
       page = 1;
 
-      final dio = Dio();
-
-      final response = await dio.get('https://randomuser.me/api/?page=$page&results=$results&seed=myusers');
+      final response = await _dio.get('https://randomuser.me/api/?page=$page&results=$results&seed=myusers');
 
       final users = response.data['results'] as List;
 
@@ -33,25 +37,9 @@ class HomeController extends ChangeNotifier {
 
       notifyListeners();
     } on DioException catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.red.shade800,
-          content: Text(
-            'Ops! Algum erro ocorreu durante a busca.',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white),
-          ),
-        ),
-      );
+      error.value = 'Ops! Algum erro ocorreu durante a busca.';
     } catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.red.shade800,
-          content: Text(
-            'Erro desconhecido.',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white),
-          ),
-        ),
-      );
+      error.value = 'Um erro inesperado ocorreu.';
     } finally {
       isLoading = false;
       notifyListeners();
@@ -64,9 +52,7 @@ class HomeController extends ChangeNotifier {
     if (scrollController.position.maxScrollExtent == scrollController.offset) {
       page++;
 
-      final dio = Dio();
-
-      final response = await dio.get('https://randomuser.me/api/?page=$page&results=$results&seed=myusers');
+      final response = await _dio.get('https://randomuser.me/api/?page=$page&results=$results&seed=myusers');
 
       final users = response.data['results'] as List;
 

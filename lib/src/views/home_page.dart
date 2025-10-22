@@ -2,6 +2,7 @@
 
 import 'package:b2_people/src/models/user_model.dart';
 import 'package:b2_people/src/view_models/home/home_controller.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -13,15 +14,30 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _homeController = HomeController();
+  late final _dio = Dio();
+  late final _homeController = HomeController(_dio);
 
   @override
   void initState() {
     super.initState();
 
-    _homeController.fetchUsers(context);
+    _homeController.fetchUsers();
 
     _homeController.scrollController.addListener(_homeController.onScroll);
+
+    _homeController.error.addListener(_usersFetchingErrorListenable);
+  }
+
+  _usersFetchingErrorListenable() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.red.shade800,
+        content: Text(
+          _homeController.error.value,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white),
+        ),
+      ),
+    );
   }
 
   @override
@@ -39,7 +55,7 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () => _homeController.fetchUsers(context),
+            onPressed: _homeController.fetchUsers,
             padding: EdgeInsets.zero,
             visualDensity: VisualDensity.compact,
             icon: Icon(
@@ -56,13 +72,13 @@ class _HomePageState extends State<HomePage> {
             height: MediaQuery.sizeOf(context).height,
             width: MediaQuery.sizeOf(context).width,
             padding: EdgeInsets.symmetric(
-              vertical: 12,
+              vertical: 24,
               horizontal: 12,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (!_homeController.isLoading)
+                if (_homeController.usersList.isNotEmpty)
                   Text(
                     'Usuários',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -120,6 +136,30 @@ class _HomePageState extends State<HomePage> {
                             },
                           );
                         } else {
+                          if (_homeController.usersList.isEmpty) {
+                            return Center(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: MediaQuery.sizeOf(context).width * 0.6,
+                                    width: MediaQuery.sizeOf(context).width * 0.6,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(100),
+                                      image: DecorationImage(
+                                        fit: BoxFit.fill,
+                                        image: AssetImage(
+                                          'assets/images/no-users-image.png',
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    'Sem Usuários no momento...',
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
                           return Center(
                             child: CircularProgressIndicator(),
                           );
@@ -163,6 +203,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     _homeController.scrollController.removeListener(_homeController.onScroll);
+    _homeController.error.removeListener(_usersFetchingErrorListenable);
     super.dispose();
   }
 }
