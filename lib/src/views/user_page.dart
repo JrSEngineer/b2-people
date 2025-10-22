@@ -1,36 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:b2_people/src/models/user_model.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({
     super.key,
-    required this.profileImage,
-    required this.userName,
-    required this.userEmail,
-    required this.userPhone,
-    required this.userCell,
-    required this.profileUsername,
-    required this.gender,
-    required this.naturallity,
-    required this.postcode,
-    required this.city,
-    required this.state,
-    required this.country,
+    required this.user,
   });
 
-  final String profileImage;
-  final String userName;
-  final String userEmail;
-  final String userPhone;
-  final String userCell;
-  final String profileUsername;
-  final String gender;
-  final String naturallity;
-  final String postcode;
-  final String city;
-  final String state;
-  final String country;
+  final UserModel user;
 
   @override
   State<UserPage> createState() => _UserPageState();
@@ -39,6 +18,13 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
+    final avatarBorderColor = switch (widget.user.gender) {
+      UserGender.female => Colors.pinkAccent,
+      UserGender.male => Colors.blueAccent,
+    };
+
+    final profileImage = widget.user.profile.profileImage;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -66,44 +52,40 @@ class _UserPageState extends State<UserPage> {
                   decoration: BoxDecoration(
                     border: Border.all(
                       width: 8,
-                      color:
-                          widget.gender ==
-                              'female' //
-                          ? Colors.pinkAccent
-                          : Colors.blueAccent,
+                      color: avatarBorderColor,
                     ),
                     shape: BoxShape.circle,
                   ),
                   child: Center(
                     child: CircleAvatar(
-                      backgroundImage: NetworkImage(widget.profileImage),
+                      backgroundImage: NetworkImage(profileImage),
                       radius: MediaQuery.sizeOf(context).width * 0.2,
                     ),
                   ),
                 ),
                 Text(
-                  widget.userName,
+                  widget.user.fullName,
                   style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                     fontWeight: FontWeight.w800,
                     color: Colors.white,
                   ),
                 ),
                 Text(
-                  widget.userEmail,
+                  widget.user.profile.email,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
                 Text(
-                  widget.userPhone,
+                  widget.user.profile.phone,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
                 Text(
-                  widget.profileUsername,
+                  widget.user.profile.profileUsername,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -139,14 +121,14 @@ class _UserPageState extends State<UserPage> {
                                         Row(
                                           children: [
                                             CountryFlag.fromCountryCode(
-                                              widget.naturallity,
+                                              widget.user.address.naturallity,
                                               theme: const ImageTheme(
                                                 shape: RoundedRectangle(4),
                                               ),
                                             ),
                                             SizedBox(width: 24),
                                             Text(
-                                              widget.country,
+                                              widget.user.address.country,
                                               style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                                                 fontWeight: FontWeight.w800,
                                               ),
@@ -166,7 +148,7 @@ class _UserPageState extends State<UserPage> {
                                           ),
                                         ),
                                         Text(
-                                          widget.city,
+                                          widget.user.address.city,
                                           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -184,7 +166,7 @@ class _UserPageState extends State<UserPage> {
                                           ),
                                         ),
                                         Text(
-                                          widget.state,
+                                          widget.user.address.state,
                                           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -202,7 +184,7 @@ class _UserPageState extends State<UserPage> {
                                           ),
                                         ),
                                         Text(
-                                          widget.userCell,
+                                          widget.user.profile.cell,
                                           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -220,7 +202,7 @@ class _UserPageState extends State<UserPage> {
                                           ),
                                         ),
                                         Text(
-                                          widget.postcode,
+                                          widget.user.address.postcode,
                                           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                             fontWeight: FontWeight.bold,
                                           ),

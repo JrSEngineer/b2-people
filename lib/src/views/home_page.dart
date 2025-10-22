@@ -1,8 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:b2_people/user_page.dart';
+import 'package:b2_people/src/models/user_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -139,21 +140,17 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (_, i) {
                     if (i < usersList.length) {
                       final userMap = usersList[i];
-                      final icon = userMap['gender'] == 'female' ? Icons.woman : Icons.man;
-                      final iconColor = userMap['gender'] == 'female' ? Colors.pinkAccent : Colors.blueAccent;
+                      final user = UserModel.fromMap(userMap);
 
-                      final profileImage = userMap['picture']['large'];
-                      final userName = '${userMap['name']['first']} ${userMap['name']['last']}';
-                      final userEmail = '${userMap['email']}';
-                      final userPhone = '${userMap['phone']}';
-                      final userCell = '${userMap['cell']}';
-                      final profileUsername = '${userMap['login']['username']}';
-                      final gender = '${userMap['gender']}';
-                      final naturallity = '${userMap['nat']}';
-                      final postcode = '${userMap['location']['postcode']}';
-                      final city = '${userMap['location']['city']}';
-                      final state = '${userMap['location']['state']}';
-                      final country = '${userMap['location']['country']}';
+                      final icon = switch (user.gender) {
+                        UserGender.female => Icons.woman,
+                        UserGender.male => Icons.man,
+                      };
+
+                      final iconColor = switch (user.gender) {
+                        UserGender.female => Colors.pinkAccent,
+                        UserGender.male => Colors.blueAccent,
+                      };
 
                       return ListTile(
                         contentPadding: EdgeInsets.zero,
@@ -171,35 +168,17 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         title: Text(
-                          userName,
+                          user.fullName,
                         ),
                         subtitle: Text(
-                          userEmail,
+                          user.profile.email,
                         ),
                         trailing: Icon(
                           icon,
                           color: iconColor,
                         ),
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => UserPage(
-                                profileImage: profileImage,
-                                userName: userName,
-                                userEmail: userEmail,
-                                userPhone: userPhone,
-                                userCell: userCell,
-                                profileUsername: profileUsername,
-                                gender: gender,
-                                naturallity: naturallity,
-                                postcode: postcode,
-                                city: city,
-                                state: state,
-                                country: country,
-                              ),
-                            ),
-                          );
+                          Modular.to.pushNamed('../users', arguments: user);
                         },
                       );
                     } else {
