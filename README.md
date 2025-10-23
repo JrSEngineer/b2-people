@@ -58,11 +58,13 @@ Introdução à Orientação a Objetos, com uso de abstrações, encapsulamentos
     network_image_mock: ^2.1.1
     flutter_launcher_icons: ^0.14.4
 
-Para ver o projeto na prática, clone o repositório usando:
+## :sparkles: Executando
+
+Clone o repositório usando:
 
 `git clone https://github.com/JrSEngineer/b2-people`
 
-Selecione a branch desejada, com o comando:
+Selecione a branch mvvm_arch, com o comando:
 
 `git branch mvvm_arch`
 
@@ -73,3 +75,19 @@ Recupere as dependências do projeto com:
 E pronto! Basta rodar a aplicação:
 
 `flutter run`
+
+## :test_tube: Rodando os testes:
+
+para executar os testes integração realizados, va à pasta raiz do projeto e rode:
+
+`flutter test .\integration_test\app_start_test.dart` 
+Que executa o teste de inicialização com navegação para a página inicial
+
+`flutter test .\integration_test\user_page_navigation_test.dart`
+Que foi criado para selecionar o primeiro item na lista e navegar para a página do usuário selecionado.
+
+Rode também:
+
+`flutter test`
+
+para executar os testes unitários e de widget criados.
