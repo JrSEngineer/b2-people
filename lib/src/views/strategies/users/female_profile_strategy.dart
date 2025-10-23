@@ -64,13 +64,6 @@ class FemaleProfileStrategy implements UserProfileStrategy {
                   ),
                 ),
                 Text(
-                  user.profile.phone,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                Text(
                   user.profile.profileUsername,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     fontWeight: FontWeight.bold,

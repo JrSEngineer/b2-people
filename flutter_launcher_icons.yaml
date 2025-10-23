@@ -1,0 +1,11 @@
+# flutter pub run flutter_launcher_icons
+flutter_launcher_icons:
+  image_path: "assets/icons/b2people_icon.png"
+
+  android: "launcher_icon"
+  image_path_android: "assets/icons/b2people_icon.png"
+  min_sdk_android: 21
+
+  ios: true
+  image_path_ios: "assets/icons/b2people_icon.png"
+  remove_alpha_ios: true
