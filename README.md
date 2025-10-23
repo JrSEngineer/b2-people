@@ -47,6 +47,16 @@ Introdução à Orientação a Objetos, com uso de abstrações, encapsulamentos
 
 #### :test_tube: Cobertura de testes em 75.7%
 
+#### Packages adicionados:
+    dio: ^5.9.0
+    country_flags: ^4.1.0
+    flutter_modular: ^6.4.1
+
+#### Dependências de desenvolvimento:
+    flutter_lints: ^5.0.0
+    mocktail: ^1.0.4
+    network_image_mock: ^2.1.1
+    flutter_launcher_icons: ^0.14.4
 
 Para ver o projeto na prática, clone o repositório usando:
 
@@ -54,7 +64,7 @@ Para ver o projeto na prática, clone o repositório usando:
 
 Selecione a branch desejada, com o comando:
 
-`git branch [branch]` (substitua [branch] pelo nome da branch desejada)
+`git branch mvvm_arch`
 
 Recupere as dependências do projeto com:
 
