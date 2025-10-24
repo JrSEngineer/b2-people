@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "224229507477",
+    "project_id": "b2-people",
+    "storage_bucket": "b2-people.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:224229507477:android:6514cb5b53e6f790b5f69c",
+        "android_client_info": {
+          "package_name": "br.com.b2people.b2_people"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "224229507477-ulobrj6ip5hldg4ovo6n9r1uc22gvt1d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.b2people.b2_people",
+            "certificate_hash": "c5391f3d0811fd6ac04d0a2b3dc54803c348b1f2"
+          }
+        },
+        {
+          "client_id": "224229507477-kusi9fekoq2uk4pufcrn4umdils9ln6g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBldyDeenMjEQPAA7gKT8iAP3aBBHhxrvw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "224229507477-kusi9fekoq2uk4pufcrn4umdils9ln6g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "224229507477-9a3n70iqnlu647hr51ae694s4uvn88d9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "br.com.b2-people.b2People"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
