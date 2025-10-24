@@ -1,5 +1,6 @@
+import 'package:b2_people/src/view_models/auth/auth_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -9,10 +10,38 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
+  final _authController = Modular.get<AuthController>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _authController.error.addListener(_authErrorListenable);
+    _authController.isOnline.addListener(_authenticationListenable);
+  }
+
+  void _authErrorListenable() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.red.shade800,
+        content: Text(
+          _authController.error.value,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white),
+        ),
+      ),
+    );
+  }
+
+  void _authenticationListenable() {
+    if (_authController.isOnline.value) {
+      Modular.to.navigate('/home/');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: SizedBox(
+    return Scaffold(
+      body: SizedBox(
         height: MediaQuery.sizeOf(context).height,
         width: MediaQuery.sizeOf(context).width,
         child: Stack(
@@ -45,10 +74,8 @@ class _AuthPageState extends State<AuthPage> {
                   ),
                   Spacer(),
                   ElevatedButton(
-                    onPressed: () async {
-                      final GoogleSignIn signIn = GoogleSignIn.instance;
-                      await signIn.initialize(serverClientId: 'project-224229507477');
-                    },
+                    key: const Key('auth_button'),
+                    onPressed: _authController.signInWithGoogle,
                     child: Row(
                       spacing: 12,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -72,5 +99,13 @@ class _AuthPageState extends State<AuthPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _authController.error.removeListener(_authErrorListenable);
+    _authController.isOnline.removeListener(_authenticationListenable);
+
+    super.dispose();
   }
 }

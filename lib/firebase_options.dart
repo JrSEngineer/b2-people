@@ -67,4 +67,5 @@ class DefaultFirebaseOptions {
     iosClientId: '224229507477-9a3n70iqnlu647hr51ae694s4uvn88d9.apps.googleusercontent.com',
     iosBundleId: 'br.com.b2-people.b2People',
   );
+
 }

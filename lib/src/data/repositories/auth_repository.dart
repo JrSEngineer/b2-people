@@ -13,22 +13,26 @@ class AuthRepository implements IAuthRepository {
 
   @override
   Future<String?> signInWithGoogle() async {
-    await _googleSignIn.initialize(serverClientId: 'project-224229507477');
-    final response = await _googleSignIn.authenticate();
+    try {
+      await _googleSignIn.initialize();
+      final response = await _googleSignIn.authenticate();
 
-    if (response.authentication.idToken == null) {
-      return 'Nenhuma conta informada.';
+      if (response.authentication.idToken == null) {
+        return 'Nenhuma conta informada.';
+      }
+
+      await _firebase.collection('users').doc(response.email).set({'online': true});
+      _emailSession = response.email;
+      return null;
+    } catch (e) {
+      return 'Erro ao realizar login.';
     }
-
-    await _firebase.collection('users').doc(response.email).set({'online': true});
-    _emailSession = response.email;
-    return null;
   }
 
   @override
   Future<void> signOut() async {
     await _googleSignIn.signOut();
-    await _firebase.collection('users').doc(_emailSession).set({'online': true});
+    await _firebase.collection('users').doc(_emailSession).set({'online': false});
     _emailSession = '';
   }
 }
