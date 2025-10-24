@@ -1,3 +1,4 @@
+import 'package:b2_people/src/modules/auth_module.dart';
 import 'package:b2_people/src/modules/home_module.dart';
 import 'package:b2_people/src/modules/users_module.dart';
 import 'package:b2_people/src/views/splash_page.dart';
@@ -11,6 +12,7 @@ class AppModule extends Module {
       '/',
       child: (_) => SplashPage(key: const Key('splash_page')),
     );
+    r.module('/auth/', module: AuthModule());
     r.module('/home/', module: HomeModule());
     r.module('/users/', module: UsersModule());
   }
