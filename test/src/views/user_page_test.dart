@@ -28,6 +28,32 @@ void main() {
         },
       );
       testWidgets(
+        'should activate the female user info bottom sheet',
+        (tester) async {
+          final userPage = UserPage(user: user1Mock);
+
+          await mockNetworkImagesFor(() async {
+            await tester.pumpWidget(
+              MaterialApp(
+                home: userPage,
+              ),
+            );
+
+            await tester.pumpAndSettle();
+
+            expect(find.text(user1Mock.fullName), findsOneWidget);
+
+            final bottomSheetButton = find.byKey(const Key('bottom_sheet_button'));
+
+            await tester.tap(bottomSheetButton);
+
+            await tester.pumpAndSettle(const Duration(seconds: 1));
+
+            expect(find.byKey(const Key('bottom_sheet')), findsOneWidget);
+          });
+        },
+      );
+      testWidgets(
         'should activate the user info bottom sheet',
         (tester) async {
           final userPage = UserPage(user: user2Mock);

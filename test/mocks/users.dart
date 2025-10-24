@@ -1,4 +1,5 @@
 import 'package:b2_people/src/models/address_model.dart';
+import 'package:b2_people/src/models/prefered_user_model.dart';
 import 'package:b2_people/src/models/profile_model.dart';
 import 'package:b2_people/src/models/user_model.dart';
 
@@ -117,3 +118,21 @@ final user2Mock = UserModel(
 );
 
 final usersList = [user1Mock, user2Mock];
+
+final preferedUser = PreferedUserModel(
+  id: 'user_id',
+  fullName: 'user_name',
+  email: 'user@email.com',
+  profileImage: 'image',
+  preferenceOwner: 'ownerpreference@email.com',
+);
+
+final seccondPreferedUser = PreferedUserModel(
+  id: 'user_id',
+  fullName: 'user_name',
+  email: 'user@email.com',
+  profileImage: 'image',
+  preferenceOwner: 'ownerpreference@email.com',
+);
+
+final preferedUsersListMock = [preferedUser, seccondPreferedUser];

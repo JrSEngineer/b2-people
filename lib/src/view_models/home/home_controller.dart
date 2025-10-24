@@ -15,6 +15,7 @@ class HomeController extends ChangeNotifier {
   int page = 1;
   int results = 20;
 
+  final scrollController = ScrollController();
   ValueNotifier<String> error = ValueNotifier('');
 
   Future<void> fetchUsers() async {
@@ -35,8 +36,6 @@ class HomeController extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
   }
-
-  final scrollController = ScrollController();
 
   onScroll() async {
     if (scrollController.position.maxScrollExtent == scrollController.offset) {

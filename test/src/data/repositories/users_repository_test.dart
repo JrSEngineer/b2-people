@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../mocks/users.dart';
+
 void main() {
   late FirebaseFirestore firebase;
   late UsersRepository repository;
@@ -18,15 +20,7 @@ void main() {
   test(
     'markUserAsPrefered should return true if user user is saved successfully',
     () async {
-      final result = await repository.markUserAsPrefered(
-        PreferedUserModel(
-          id: 'user_id',
-          fullName: 'user_name',
-          email: 'user@email.com',
-          profileImage: 'image',
-          preferenceOwner: 'ownerpreference@email.com',
-        ),
-      );
+      final result = await repository.markUserAsPrefered(preferedUser);
 
       expect(result, isTrue);
     },
@@ -35,15 +29,7 @@ void main() {
   test(
     'getPreferedUsers should retrieve a list of users previously marked as prefered (returns a List<PreferedUserModel>)',
     () async {
-      final markResult = await repository.markUserAsPrefered(
-        PreferedUserModel(
-          id: 'user_id',
-          fullName: 'user_name',
-          email: 'user@email.com',
-          profileImage: 'image',
-          preferenceOwner: 'ownerpreference@email.com',
-        ),
-      );
+      final markResult = await repository.markUserAsPrefered(preferedUser);
 
       expect(markResult, isTrue);
 
@@ -58,15 +44,7 @@ void main() {
   test(
     'getPreferedUsers retrieve a list of users previously marked as prefered (returns a List<PreferedUserModel>)',
     () async {
-      final markResult = await repository.markUserAsPrefered(
-        PreferedUserModel(
-          id: 'user_id',
-          fullName: 'user_name',
-          email: 'user@email.com',
-          profileImage: 'image',
-          preferenceOwner: 'ownerpreference@email.com',
-        ),
-      );
+      final markResult = await repository.markUserAsPrefered(preferedUser);
 
       expect(markResult, isTrue);
 
@@ -81,17 +59,7 @@ void main() {
   test(
     'removerPreference should return true if user user is remove from preferences',
     () async {
-      final user = PreferedUserModel(
-        id: 'user_id',
-        fullName: 'user_name',
-        email: 'user@email.com',
-        profileImage: 'image',
-        preferenceOwner: 'ownerpreference@email.com',
-      );
-
-      final result = await repository.markUserAsPrefered(
-        user,
-      );
+      final result = await repository.markUserAsPrefered(preferedUser);
 
       expect(result, isTrue);
 
@@ -101,7 +69,7 @@ void main() {
       expect(usersResult, isNotEmpty);
       expect(errorString, isNull);
 
-      final removingResult = await repository.removePreference(user);
+      final removingResult = await repository.removePreference(preferedUser);
 
       expect(removingResult, isTrue);
 
@@ -115,15 +83,7 @@ void main() {
   test(
     'getUserMarks should retrieve the amount of preferences of a single user (returns an int with the value)',
     () async {
-      final markResult = await repository.markUserAsPrefered(
-        PreferedUserModel(
-          id: 'user_id',
-          fullName: 'user_name',
-          email: 'user@email.com',
-          profileImage: 'image',
-          preferenceOwner: 'ownerpreference@email.com',
-        ),
-      );
+      final markResult = await repository.markUserAsPrefered(preferedUser);
 
       expect(markResult, isTrue);
 
