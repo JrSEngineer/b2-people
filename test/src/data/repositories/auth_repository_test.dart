@@ -77,8 +77,30 @@ void main() {
           final result = await repository.signInWithGoogle();
 
           expect(result, isNull);
+          expect(repository.emailSession, isNotEmpty);
         },
       );
+    },
+  );
+
+  test(
+    'signOut should remove current user access to app, and set the "_emailSession" as empty',
+    () async {
+      googleAccount = GoogleSignInAccountMock();
+
+      when(() => googleSignIn.initialize(serverClientId: any(named: 'serverClientId'))).thenAnswer((_) async => Future.value());
+      when(() => googleSignIn.authenticate()).thenAnswer((_) async => googleAccount);
+
+      final result = await repository.signInWithGoogle();
+
+      expect(result, isNull);
+      expect(repository.emailSession, isNotEmpty);
+
+      when(() => googleSignIn.signOut()).thenAnswer((_) async => Future.value());
+
+      await repository.signOut();
+
+      expect(repository.emailSession, isEmpty);
     },
   );
 }

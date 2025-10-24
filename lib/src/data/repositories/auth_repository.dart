@@ -8,6 +8,9 @@ class AuthRepository implements IAuthRepository {
   final GoogleSignIn _googleSignIn;
   final FirebaseFirestore _firebase;
 
+  String _emailSession = '';
+  String get emailSession => _emailSession;
+
   @override
   Future<String?> signInWithGoogle() async {
     await _googleSignIn.initialize(serverClientId: 'project-224229507477');
@@ -18,12 +21,14 @@ class AuthRepository implements IAuthRepository {
     }
 
     await _firebase.collection('users').doc(response.email).set({'online': true});
-
+    _emailSession = response.email;
     return null;
   }
 
   @override
   Future<void> signOut() async {
     await _googleSignIn.signOut();
+    await _firebase.collection('users').doc(_emailSession).set({'online': true});
+    _emailSession = '';
   }
 }
