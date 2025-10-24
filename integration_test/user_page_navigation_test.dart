@@ -9,6 +9,20 @@ void main() {
       app.main();
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
+      expect(find.byKey(const Key('auth_page')), findsOneWidget);
+
+      await tester.pump();
+
+      final authButton = find.byKey(const Key('auth_button'));
+
+      await tester.tap(authButton);
+
+      await tester.pump();
+
+      await tester.pumpAndSettle(const Duration(seconds: 15));
+
+      await tester.pump();
+
       expect(find.byKey(const Key('home_page')), findsOneWidget);
 
       final firstUserTile = find.byKey(const Key('user_tile')).first;

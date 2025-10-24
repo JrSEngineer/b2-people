@@ -4,12 +4,12 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets(
-    'App should reach home page and load users list',
+    'App should reach auth page',
     (tester) async {
       app.main();
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
-      expect(find.byKey(const Key('home_page')), findsOneWidget);
+      expect(find.byKey(const Key('auth_page')), findsOneWidget);
     },
   );
 }
