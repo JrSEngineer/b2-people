@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:b2_people/src/models/basic_person_model.dart';
-import 'package:b2_people/src/models/user_model.dart';
+import 'package:b2_people/src/models/person_gender.dart';
 import 'package:b2_people/src/view_models/auth/auth_controller.dart';
 import 'package:b2_people/src/view_models/users/users_controller.dart';
 import 'package:b2_people/src/views/strategies/users/female_profile_strategy.dart';
@@ -29,10 +29,10 @@ class _UserPageState extends State<UserPage> {
     final userPageBody = UserPageBody();
 
     switch (widget.user.gender) {
-      case UserGender.female:
+      case PersonGender.female:
         userPageBody.setProfileStrategy(FemaleProfileStrategy(widget.user, _authController, _usersController));
         return userPageBody.renderFemaleProfile(context);
-      case UserGender.male:
+      case PersonGender.male:
         userPageBody.setProfileStrategy(MaleProfileStrategy(widget.user, _authController, _usersController));
         return userPageBody.renderMaleProfile(context);
     }

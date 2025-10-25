@@ -1,12 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-import 'package:b2_people/src/models/user_model.dart';
+import 'package:b2_people/src/models/person_gender.dart';
 
 class PreferedUserModel {
   final String id;
   final String fullName;
   final String email;
-  final UserGender gender;
+  final PersonGender gender;
   final String profileImage;
   final String preferenceOwner;
 
@@ -35,7 +35,7 @@ class PreferedUserModel {
       id: map['id'] as String,
       fullName: map['fullName'] as String,
       email: map['email'] as String,
-      gender: map['gender'] == 'female' ? UserGender.female : UserGender.male,
+      gender: map['gender'] == 'female' ? PersonGender.female : PersonGender.male,
       profileImage: map['profileImage'] as String,
       preferenceOwner: map['preferenceOwner'] as String,
     );

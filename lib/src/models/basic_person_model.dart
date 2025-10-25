@@ -1,11 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:b2_people/src/models/user_model.dart';
+
+import 'package:b2_people/src/models/person_gender.dart';
 
 class BasicPersonModel {
   final String id;
   String usedSeed;
   final String fullName;
-  final UserGender gender;
+  final PersonGender gender;
   final String email;
   final String naturallity;
   final String profileImage;
@@ -24,9 +25,9 @@ class BasicPersonModel {
     final genderStringValue = map['gender'];
 
     final gender = switch (genderStringValue) {
-      'female' => UserGender.female,
-      'male' => UserGender.male,
-      _ => UserGender.female,
+      'female' => PersonGender.female,
+      'male' => PersonGender.male,
+      _ => PersonGender.female,
     };
 
     return BasicPersonModel(

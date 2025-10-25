@@ -1,5 +1,5 @@
+import 'package:b2_people/src/models/person_gender.dart';
 import 'package:b2_people/src/models/prefered_user_model.dart';
-import 'package:b2_people/src/models/user_model.dart';
 import 'package:flutter/material.dart';
 
 class PreferedUserTile extends StatelessWidget {
@@ -15,8 +15,8 @@ class PreferedUserTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final genderColor = switch (user.gender) {
-      UserGender.female => Colors.pinkAccent,
-      UserGender.male => Colors.blueAccent,
+      PersonGender.female => Colors.pinkAccent,
+      PersonGender.male => Colors.blueAccent,
     };
 
     return ListTile(

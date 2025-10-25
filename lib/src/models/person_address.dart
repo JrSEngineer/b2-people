@@ -1,0 +1,35 @@
+class PersonAddress {
+  final String streetName;
+  final int streetNumber;
+  final String city;
+  final String state;
+  final String country;
+  final String postcode;
+
+  PersonAddress({
+    required this.streetName,
+    required this.streetNumber,
+    required this.city,
+    required this.state,
+    required this.country,
+    required this.postcode,
+  });
+
+  factory PersonAddress.frommap(Map<String, dynamic> map) => PersonAddress(
+    streetName: map['street']['name'],
+    streetNumber: map['street']['number'],
+    city: map['city'],
+    state: map['state'],
+    country: map['country'],
+    postcode: map['postcode'],
+  );
+
+  Map<String, dynamic> tomap() => {
+    'streetName': streetName,
+    'streetNumber': streetNumber,
+    'city': city,
+    'state': state,
+    'country': country,
+    'postcode': postcode,
+  };
+}
