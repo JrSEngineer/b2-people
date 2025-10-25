@@ -1,5 +1,5 @@
 import 'package:b2_people/src/data/interfaces/iusers_repository.dart';
-import 'package:b2_people/src/data/repositories/users_repository.dart';
+import 'package:b2_people/src/data/repositories/users_repository_impl.dart';
 import 'package:b2_people/src/modules/common_module.dart';
 import 'package:b2_people/src/view_models/users/users_controller.dart';
 import 'package:b2_people/src/views/favorites_page.dart';

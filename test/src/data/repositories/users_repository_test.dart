@@ -1,4 +1,4 @@
-import 'package:b2_people/src/data/repositories/users_repository.dart';
+import 'package:b2_people/src/data/repositories/users_repository_impl.dart';
 import 'package:b2_people/src/models/prefered_user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
