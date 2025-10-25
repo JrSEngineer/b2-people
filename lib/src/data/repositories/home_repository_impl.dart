@@ -18,6 +18,9 @@ class HomeRepositoryImpl implements IHomeRepository {
       for (var item in users) {
         var userMap = item as Map<String, dynamic>;
         final user = BasicPersonModel.fromMap(userMap);
+        final usedSeed = response.data['info']['seed'] as String;
+
+        user.addSeed(usedSeed);
 
         usersList.add(user);
       }
