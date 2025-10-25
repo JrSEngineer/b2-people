@@ -12,7 +12,6 @@ import '../../../mocks/persons.dart';
 class DioMock extends Mock implements DioMixin {}
 
 void main() {
-  final String path = 'https://randomuser.me/api/?page=1&results=20&seed=seed';
   late Dio dio;
   late IHomeRepository repository;
   late FirebaseFirestore firestore;
@@ -26,12 +25,12 @@ void main() {
   );
 
   group(
-    'getUsers should',
+    'getPersons should',
     () {
       test(
         'fail with DioException, returning null for the list value, and a string containing the error message.',
         () async {
-          when(() => dio.get(path)).thenThrow(
+          when(() => dio.get(any())).thenThrow(
             DioException(
               response: Response(
                 statusCode: 400,
@@ -41,26 +40,26 @@ void main() {
             ),
           );
 
-          final (users, error) = await repository.getPersons('seed', 1, 20);
+          final (persons, error) = await repository.getPersons('seed', 1, 20);
 
-          expect(users, isNull);
+          expect(persons, isNull);
           expect(error, equals('Ops! Algum erro ocorreu durante a busca.'));
         },
       );
       test(
         'fail with Exception, returning null for the list value, and a string containing the error message.',
         () async {
-          when(() => dio.get(path)).thenThrow(Exception());
-          final (users, error) = await repository.getPersons('seed', 1, 20);
+          when(() => dio.get(any())).thenThrow(Exception());
+          final (persons, error) = await repository.getPersons('seed', 1, 20);
 
-          expect(users, isNull);
+          expect(persons, isNull);
           expect(error, equals('Um erro inesperado ocorreu.'));
         },
       );
       test(
-        'return a list of users and a null string as error value',
+        'return a list of persons and a null string as error value',
         () async {
-          when(() => dio.get(path)).thenAnswer(
+          when(() => dio.get(any())).thenAnswer(
             (_) async => Response(
               requestOptions: RequestOptions(),
               statusCode: 200,
@@ -68,15 +67,26 @@ void main() {
             ),
           );
 
-          final (users, error) = await repository.getPersons('seed', 1, 20);
+          final (persons, error) = await repository.getPersons('seed', 1, 20);
 
-          expect(users, isNotNull);
-          expect(users, isNotEmpty);
+          expect(persons, isNotNull);
+          expect(persons, isNotEmpty);
           expect(error, isNull);
-          expect(users!.first, isA<BasicPersonModel>());
-          expect(users.first.fullName, equals('Jennie Nichols'));
+          expect(persons!.first, isA<BasicPersonModel>());
+          expect(persons.first.fullName, equals('Jennie Nichols'));
         },
       );
+    },
+  );
+
+  test(
+    'return a list of persons and a null string as error value',
+    () async {
+      final (persons, error) = await repository.getSavedPersons();
+
+      expect(persons, isNotNull);
+      expect(error, isNull);
+      expect(persons, isA<List<BasicPersonModel>>());
     },
   );
 }

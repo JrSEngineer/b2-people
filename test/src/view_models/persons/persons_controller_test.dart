@@ -1,6 +1,5 @@
 import 'package:b2_people/src/data/interfaces/ipersons_repository.dart';
 import 'package:b2_people/src/models/person_model.dart';
-import 'package:b2_people/src/models/prefered_person_model.dart';
 import 'package:b2_people/src/view_models/persons/persons_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -63,9 +62,10 @@ void main() {
       test(
         'notify when a preference not occurs as expected (updates "error" value)',
         () async {
-          when(() => repository.markPersonAsPrefered(any(), any())).thenAnswer((_) async => (false));
+          final accountEmail = 'ownerpreference@email.com';
+          when(() => repository.markPersonAsPrefered(accountEmail, personMock)).thenAnswer((_) async => (false));
 
-          await controller.markUserAsPrefered('preferedPerson', personMock);
+          await controller.markUserAsPrefered(accountEmail, personMock);
 
           expect(controller.error.value, isNotEmpty);
           expect(controller.error.value, equals('Erro ao favoritar perfil de usuário.'));
@@ -76,9 +76,10 @@ void main() {
       test(
         'notify when a preference is set successfully (updates "success" value)',
         () async {
-          when(() => repository.markPersonAsPrefered(any(), any())).thenAnswer((_) async => (true));
+          final accountEmail = 'ownerpreference@email.com';
+          when(() => repository.markPersonAsPrefered(accountEmail, personMock)).thenAnswer((_) async => (true));
 
-          await controller.markUserAsPrefered('preferedPerson', personMock);
+          await controller.markUserAsPrefered(accountEmail, personMock);
 
           expect(controller.success.value, isNotEmpty);
           expect(controller.success.value, equals('Perfil de usuário marcado como favorito.'));
@@ -93,9 +94,10 @@ void main() {
       test(
         'notify when a preference is not removed (updates "error" value)',
         () async {
-          when(() => repository.removePreference(any(), any())).thenAnswer((_) async => (false));
+          final accountEmail = 'ownerpreference@email.com';
+          when(() => repository.removePreference(accountEmail, personMock)).thenAnswer((_) async => (false));
 
-          await controller.removePreference('accountEmail', personMock);
+          await controller.removePreference(accountEmail, personMock);
 
           expect(controller.error.value, isNotEmpty);
           expect(controller.error.value, equals('Erro ao remover preferência.'));
@@ -106,9 +108,10 @@ void main() {
       test(
         'notify when a preference is removed successfully (updates "success" value)',
         () async {
-          when(() => repository.removePreference(any(), any())).thenAnswer((_) async => (true));
+          final accountEmail = 'ownerpreference@email.com';
+          when(() => repository.removePreference(accountEmail, personMock)).thenAnswer((_) async => (true));
 
-          await controller.removePreference('accountEmail', personMock);
+          await controller.removePreference(accountEmail, personMock);
 
           expect(controller.success.value, isNotEmpty);
           expect(controller.success.value, equals('Preferência de perfil removida.'));
@@ -124,9 +127,10 @@ void main() {
       test(
         'notify when prefered users fetching fails (return a record with null value and error string message)',
         () async {
-          when(() => repository.getPreferedPersons(any())).thenAnswer((_) async => (null, 'Erro ao obter perfis marcados como favoritos.'));
+          final accountEmail = 'ownerpreference@email.com';
+          when(() => repository.getPreferedPersons(accountEmail)).thenAnswer((_) async => (null, 'Erro ao obter perfis marcados como favoritos.'));
 
-          await controller.getPreferedPersons('user@email.com');
+          await controller.getPreferedPersons(accountEmail);
 
           expect(controller.error.value, isNotEmpty);
           expect(controller.error.value, equals('Erro ao obter perfis marcados como favoritos.'));

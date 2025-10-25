@@ -15,7 +15,7 @@ class PersonAddress {
     required this.postcode,
   });
 
-  factory PersonAddress.frommap(Map<String, dynamic> map) => PersonAddress(
+  factory PersonAddress.fromMap(Map<String, dynamic> map) => PersonAddress(
     streetName: map['street']['name'],
     streetNumber: map['street']['number'],
     city: map['city'],

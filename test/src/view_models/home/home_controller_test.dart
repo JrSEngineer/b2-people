@@ -26,6 +26,7 @@ void main() {
       test(
         'fail with DioException',
         () async {
+          when(() => repository.getSavedPersons()).thenAnswer((_) async => (<BasicPersonModel>[], 'Um erro inesperado ocorreu.'));
           when(() => repository.getPersons(any(), any(), any())).thenAnswer((_) async => (<BasicPersonModel>[], 'Ops! Algum erro ocorreu durante a busca.'));
 
           await controller.fetchUsers();
@@ -36,6 +37,7 @@ void main() {
       test(
         'fail with different kind of Exception',
         () async {
+          when(() => repository.getSavedPersons()).thenAnswer((_) async => (<BasicPersonModel>[], 'Um erro inesperado ocorreu.'));
           when(() => repository.getPersons(any(), any(), any())).thenAnswer((_) async => (<BasicPersonModel>[], 'Um erro inesperado ocorreu.'));
 
           await controller.fetchUsers();
@@ -46,6 +48,7 @@ void main() {
       test(
         'pass successfully filling up users list',
         () async {
+          when(() => repository.getSavedPersons()).thenAnswer((_) async => (<BasicPersonModel>[], null));
           when(() => repository.getPersons(any(), any(), any())).thenAnswer((_) async => (personsList, null));
 
           await controller.fetchUsers();
