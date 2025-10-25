@@ -1,9 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'package:b2_people/src/models/user_model.dart';
+
 class PreferedUserModel {
   final String id;
   final String fullName;
   final String email;
+  final UserGender gender;
   final String profileImage;
   final String preferenceOwner;
 
@@ -11,6 +14,7 @@ class PreferedUserModel {
     required this.id,
     required this.fullName,
     required this.email,
+    required this.gender,
     required this.profileImage,
     required this.preferenceOwner,
   });
@@ -20,6 +24,7 @@ class PreferedUserModel {
       'id': id,
       'fullName': fullName,
       'email': email,
+      'gender': gender.name,
       'profileImage': profileImage,
       'preferenceOwner': preferenceOwner,
     };
@@ -30,6 +35,7 @@ class PreferedUserModel {
       id: map['id'] as String,
       fullName: map['fullName'] as String,
       email: map['email'] as String,
+      gender: map['gender'] == 'female' ? UserGender.female : UserGender.male,
       profileImage: map['profileImage'] as String,
       preferenceOwner: map['preferenceOwner'] as String,
     );

@@ -123,6 +123,7 @@ final preferedUser = PreferedUserModel(
   id: 'user_id',
   fullName: 'user_name',
   email: 'user@email.com',
+  gender: UserGender.female,
   profileImage: 'image',
   preferenceOwner: 'ownerpreference@email.com',
 );
@@ -131,6 +132,7 @@ final seccondPreferedUser = PreferedUserModel(
   id: 'user_id',
   fullName: 'user_name',
   email: 'user@email.com',
+  gender: UserGender.male,
   profileImage: 'image',
   preferenceOwner: 'ownerpreference@email.com',
 );
