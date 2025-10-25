@@ -53,7 +53,8 @@ class _AuthPageState extends State<AuthPage> {
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.white,
-                    Color(0xff321F5D),
+                    Color(0xffCFBAFF),
+                    Color(0xff5109F9),
                   ],
                 ),
               ),
@@ -65,7 +66,7 @@ class _AuthPageState extends State<AuthPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Olá,\nBoas vidas!',
+                    'Olá,\nBoas vindas!',
                     style: Theme.of(context).textTheme.displaySmall,
                   ),
                   Text(

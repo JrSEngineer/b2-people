@@ -13,7 +13,18 @@ class AppWidget extends StatelessWidget {
       routerConfig: Modular.routerConfig,
       debugShowCheckedModeBanner: false,
       title: 'B2 People',
-      theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
+      theme: ThemeData(
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Color(0xff5109F9),
+        ),
+        appBarTheme: AppBarTheme(
+          iconTheme: IconThemeData(color: Colors.white),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color(0xff5109F9),
+        ),
+      ),
     );
   }
 }

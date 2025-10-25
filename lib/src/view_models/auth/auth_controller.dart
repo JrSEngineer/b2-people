@@ -9,22 +9,24 @@ class AuthController extends ChangeNotifier {
   bool isLoading = false;
   ValueNotifier<String> error = ValueNotifier('');
   ValueNotifier<bool> isOnline = ValueNotifier(false);
+  String userEmail = '';
 
   Future<void> signInWithGoogle() async {
     isLoading = true;
     notifyListeners();
 
-    final result = await _repository.signInWithGoogle();
+    final (result, errorMessage) = await _repository.signInWithGoogle();
 
-    if (result != null) {
+    if (errorMessage != null) {
       isLoading = false;
 
-      error.value = result;
+      error.value = errorMessage;
       notifyListeners();
       return;
     }
 
     isOnline.value = true;
+    userEmail = result!;
 
     isLoading = false;
     notifyListeners();
@@ -33,5 +35,6 @@ class AuthController extends ChangeNotifier {
   Future<void> signOut() async {
     await _repository.signOut();
     isOnline.value = false;
+    userEmail = '';
   }
 }

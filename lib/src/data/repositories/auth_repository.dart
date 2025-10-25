@@ -12,20 +12,21 @@ class AuthRepository implements IAuthRepository {
   String get emailSession => _emailSession;
 
   @override
-  Future<String?> signInWithGoogle() async {
+  Future<(String?, String?)> signInWithGoogle() async {
     try {
       await _googleSignIn.initialize();
       final response = await _googleSignIn.authenticate();
 
       if (response.authentication.idToken == null) {
-        return 'Nenhuma conta informada.';
+        return (null, 'Nenhuma conta informada.');
       }
 
       await _firebase.collection('users').doc(response.email).set({'online': true});
       _emailSession = response.email;
-      return null;
+
+      return (response.email, null);
     } catch (e) {
-      return 'Erro ao realizar login.';
+      return (null, 'Erro ao realizar login.');
     }
   }
 

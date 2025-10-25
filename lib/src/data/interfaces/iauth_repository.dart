@@ -1,4 +1,4 @@
 abstract interface class IAuthRepository {
-  Future<String?> signInWithGoogle();
+  Future<(String?, String?)> signInWithGoogle();
   Future<void> signOut();
 }
