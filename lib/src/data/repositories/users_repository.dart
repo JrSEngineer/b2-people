@@ -10,7 +10,8 @@ class UsersRepository implements IUsersRepository {
   @override
   Future<bool> markUserAsPrefered(PreferedUserModel user) async {
     try {
-      await _firestore.collection('profiles').doc(user.id).set(user.toMap());
+      await _firestore.collection('profiles').doc(user.id).collection('marks').doc(user.preferenceOwner).set(user.toMap());
+      await _firestore.collection('users').doc(user.preferenceOwner).collection('favorites').doc(user.id).set(user.toMap());
 
       return true;
     } catch (e) {
@@ -21,7 +22,8 @@ class UsersRepository implements IUsersRepository {
   @override
   Future<bool> removePreference(PreferedUserModel user) async {
     try {
-      await _firestore.collection('profiles').doc(user.id).delete();
+      await _firestore.collection('profiles').doc(user.id).collection('marks').doc(user.preferenceOwner).delete();
+      await _firestore.collection('users').doc(user.preferenceOwner).collection('favorites').doc(user.id).delete();
 
       return true;
     } catch (e) {
@@ -34,12 +36,10 @@ class UsersRepository implements IUsersRepository {
     try {
       final List<PreferedUserModel> preferedUsers = [];
 
-      final profilesCollection = await _firestore.collection('profiles').get();
-      final preferedUsersDocs = profilesCollection.docs.where((doc) {
-        return doc.data()['preferenceOwner'] == accountEmail;
-      }).toList();
+      final favoriteesCollection = await _firestore.collection('users').doc(accountEmail).collection('favorites').get();
+      final preferedProfilesDocs = favoriteesCollection.docs.toList();
 
-      for (var user in preferedUsersDocs) {
+      for (var user in preferedProfilesDocs) {
         final userMap = user.data();
         final preferedUser = PreferedUserModel.fromMap(userMap);
         preferedUsers.add(preferedUser);
@@ -54,12 +54,9 @@ class UsersRepository implements IUsersRepository {
   @override
   Future<(int?, String?)> getUserMarks(String userId) async {
     try {
-      final profilesCollection = await _firestore.collection('profiles').get();
-      final preferedUsersDocs = profilesCollection.docs.where((doc) {
-        return doc.data()['id'] == userId;
-      }).toList();
+      final profileMarks = await _firestore.collection('profiles').doc(userId).collection('marks').get();
 
-      final totalPreferences = preferedUsersDocs.length;
+      final totalPreferences = profileMarks.docs.length;
 
       return (totalPreferences, null);
     } catch (e) {
