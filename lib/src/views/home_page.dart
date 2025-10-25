@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:b2_people/src/view_models/auth/auth_controller.dart';
 import 'package:b2_people/src/view_models/home/home_controller.dart';
 import 'package:b2_people/src/views/strategies/home/body_rendering_strategy.dart';
 import 'package:b2_people/src/views/strategies/home/home_body.dart';
@@ -15,15 +16,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _authController = Modular.get<AuthController>();
   final _homeController = Modular.get<HomeController>();
 
   @override
   void initState() {
     super.initState();
-
-    _homeController.fetchUsers();
+    _authController.isOnline.addListener(_authenticationListenable);
     _homeController.scrollController.addListener(_homeController.onScroll);
     _homeController.error.addListener(_usersFetchingErrorListenable);
+
+    _homeController.fetchUsers();
+  }
+
+  void _authenticationListenable() {
+    if (!_authController.isOnline.value) {
+      Modular.to.navigate('../auth/');
+    }
   }
 
   Widget _body() {
@@ -36,7 +45,7 @@ class _HomePageState extends State<HomePage> {
           body.setRenderingStrategy(LoadingRenderingStrategy());
           return body.renderLoading(context);
         } else {
-          body.setRenderingStrategy(BodyRenderingStrategy(_homeController));
+          body.setRenderingStrategy(BodyRenderingStrategy(_authController, _homeController));
           return body.renderUsersList(context);
         }
       },
@@ -60,6 +69,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
+    _authController.isOnline.removeListener(_authenticationListenable);
     _homeController.scrollController.removeListener(_homeController.onScroll);
     _homeController.error.removeListener(_usersFetchingErrorListenable);
     super.dispose();
