@@ -19,7 +19,7 @@ void main() {
 
       await tester.pump();
 
-      await tester.pumpAndSettle(const Duration(seconds: 15));
+      await tester.pumpAndSettle(const Duration(seconds: 8));
 
       await tester.pump();
 

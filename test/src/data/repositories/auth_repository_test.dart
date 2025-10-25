@@ -59,24 +59,27 @@ void main() {
           when(() => googleSignIn.initialize(serverClientId: any(named: 'serverClientId'))).thenAnswer((_) async => Future.value());
           when(() => googleSignIn.authenticate()).thenAnswer((_) async => googleAccount);
 
-          final result = await repository.signInWithGoogle();
+          final (result, errorMessage) = await repository.signInWithGoogle();
 
-          expect(result, isNotNull);
-          expect(result, isNotEmpty);
-          expect(result, equals('Nenhuma conta informada.'));
+          expect(errorMessage, isNotNull);
+          expect(errorMessage, isNotEmpty);
+          expect(errorMessage, equals('Nenhuma conta informada.'));
+          expect(result, isNull);
         },
       );
       test(
-        'return null value, after setting "online" status in firestore, if authentication succeeds',
+        'return user email, after setting "online" status in firestore, if authentication succeeds',
         () async {
           googleAccount = GoogleSignInAccountMock();
 
           when(() => googleSignIn.initialize(serverClientId: any(named: 'serverClientId'))).thenAnswer((_) async => Future.value());
           when(() => googleSignIn.authenticate()).thenAnswer((_) async => googleAccount);
 
-          final result = await repository.signInWithGoogle();
+          final (result, errorMessage) = await repository.signInWithGoogle();
 
-          expect(result, isNull);
+          expect(errorMessage, isNull);
+          expect(result, isNotNull);
+          expect(result, equals('user@email.com'));
           expect(repository.emailSession, isNotEmpty);
         },
       );
@@ -91,10 +94,11 @@ void main() {
       when(() => googleSignIn.initialize(serverClientId: any(named: 'serverClientId'))).thenAnswer((_) async => Future.value());
       when(() => googleSignIn.authenticate()).thenAnswer((_) async => googleAccount);
 
-      final result = await repository.signInWithGoogle();
+      final (result, errorMessage) = await repository.signInWithGoogle();
 
-      expect(result, isNull);
-      expect(repository.emailSession, isNotEmpty);
+      expect(errorMessage, isNull);
+      expect(result, isNotNull);
+      expect(result, equals('user@email.com'));
 
       when(() => googleSignIn.signOut()).thenAnswer((_) async => Future.value());
 

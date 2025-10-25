@@ -26,7 +26,7 @@ void main() {
     test(
       'fail to authenticate user',
       () async {
-        when(() => repository.signInWithGoogle()).thenAnswer((_) async => 'Falha na autenticação.');
+        when(() => repository.signInWithGoogle()).thenAnswer((_) async => (null, 'Falha na autenticação.'));
 
         await controller.signInWithGoogle();
 
@@ -38,12 +38,13 @@ void main() {
     test(
       'authenticate user successfully',
       () async {
-        when(() => repository.signInWithGoogle()).thenAnswer((_) async => null);
+        when(() => repository.signInWithGoogle()).thenAnswer((_) async => ('user@email.com', null));
 
         await controller.signInWithGoogle();
 
         expect(controller.error.value, isEmpty);
         expect(controller.isOnline.value, equals(true));
+        expect(controller.userEmail, isNotEmpty);
       },
     );
   });
@@ -56,6 +57,7 @@ void main() {
       await controller.signOut();
 
       expect(controller.isOnline.value, equals(false));
+      expect(controller.userEmail, isEmpty);
     },
   );
 }
