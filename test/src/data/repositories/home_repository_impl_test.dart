@@ -1,5 +1,6 @@
 import 'package:b2_people/src/data/interfaces/ihome_repository.dart';
 import 'package:b2_people/src/data/repositories/home_repository_impl.dart';
+import 'package:b2_people/src/models/basic_person_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -68,8 +69,8 @@ void main() {
           expect(users, isNotNull);
           expect(users, isNotEmpty);
           expect(error, isNull);
-          // expect(users!.first, isA<UserModel>());
-          // expect(users.first.fullName, equals('Jennie Nichols'));
+          expect(users!.first, isA<BasicPersonModel>());
+          expect(users.first.fullName, equals('Jennie Nichols'));
         },
       );
     },

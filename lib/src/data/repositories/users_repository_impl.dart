@@ -1,11 +1,32 @@
 import 'package:b2_people/src/data/interfaces/iusers_repository.dart';
+import 'package:b2_people/src/models/person_model.dart';
 import 'package:b2_people/src/models/prefered_user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 
 class UsersRepository implements IUsersRepository {
-  UsersRepository(this._firestore);
+  UsersRepository(this._dio, this._firestore);
 
+  final Dio _dio;
   final FirebaseFirestore _firestore;
+
+  @override
+  Future<(Person?, String?)> fetchPerson(String seed) async {
+    try {
+      final response = await _dio.get('https://randomuser.me/api/seed=$seed');
+      final personsList = response.data['results'] as List;
+
+      final personMap = personsList.first as Map<String, dynamic>;
+
+      final person = Person.frommap(personMap);
+
+      return (person, null);
+    } on DioException catch (_) {
+      return (null, 'Ops! Não foi possível obter informações do perfil selecionado.');
+    } catch (e) {
+      return (null, 'Um erro inesperado ocorreu.');
+    }
+  }
 
   @override
   Future<bool> markUserAsPrefered(PreferedUserModel user) async {

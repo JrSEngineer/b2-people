@@ -1,19 +1,79 @@
 import 'package:b2_people/src/data/repositories/users_repository_impl.dart';
 import 'package:b2_people/src/models/prefered_user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../mocks/users.dart';
+import 'home_repository_impl_test.dart';
 
 void main() {
+  late Dio dio;
   late FirebaseFirestore firebase;
   late UsersRepository repository;
 
   setUpAll(
     () {
+      dio = DioMock();
       firebase = FakeFirebaseFirestore();
-      repository = UsersRepository(firebase);
+      repository = UsersRepository(dio, firebase);
+    },
+  );
+
+  group(
+    'fetchPeron should',
+    () {
+      test(
+        'return a record with a null value and an error string message when person fetching fails',
+        () async {
+          when(() => dio.get(any())).thenThrow(
+            DioException(
+              response: Response(
+                statusCode: 400,
+                requestOptions: RequestOptions(),
+              ),
+              requestOptions: RequestOptions(),
+            ),
+          );
+
+          final (users, error) = await repository.fetchPerson('seed');
+
+          expect(users, isNull);
+          expect(error, equals('Ops! Não foi possível obter informações do perfil selecionado.'));
+        },
+      );
+      test(
+        'fail with generic exception',
+        () async {
+          when(() => dio.get(any())).thenThrow(Exception());
+          final (users, error) = await repository.fetchPerson('seed');
+
+          expect(users, isNull);
+          expect(error, equals('Um erro inesperado ocorreu.'));
+        },
+      );
+      test(
+        'return a record with a person object and a null value when person fetching completes successfully.',
+        () async {
+          when(() => dio.get(any())).thenAnswer(
+            (_) async => Response(
+              requestOptions: RequestOptions(),
+              statusCode: 200,
+              data: userMapsResultsMock,
+            ),
+          );
+
+          final (person, error) = await repository.fetchPerson('seed');
+
+          expect(person, isNotNull);
+          expect(person!.id, isNotEmpty);
+          expect(person.name.first, equals('Jennie'));
+          expect(person.name.last, equals('Nichols'));
+          expect(error, isNull);
+        },
+      );
     },
   );
 
