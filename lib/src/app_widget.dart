@@ -18,6 +18,7 @@ class AppWidget extends StatelessWidget {
           backgroundColor: Color(0xff5109F9),
         ),
         appBarTheme: AppBarTheme(
+          backgroundColor: Color(0xff5109F9),
           iconTheme: IconThemeData(color: Colors.white),
         ),
         iconTheme: IconThemeData(color: Colors.white),

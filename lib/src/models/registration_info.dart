@@ -16,4 +16,6 @@ class RegistrationInfo {
     'date': date.toIso8601String(),
     'age': age,
   };
+
+  factory RegistrationInfo.empty() => RegistrationInfo(date: DateTime(2), age: 1);
 }

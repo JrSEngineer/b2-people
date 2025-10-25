@@ -20,4 +20,6 @@ class PersonName {
     'first': first,
     'last': last,
   };
+
+  factory PersonName.empty() => PersonName(title: '', first: '', last: '');
 }

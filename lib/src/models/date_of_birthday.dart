@@ -16,4 +16,6 @@ class DateOfBirthday {
     'date': date.toIso8601String(),
     'age': age,
   };
+
+  factory DateOfBirthday.empty() => DateOfBirthday(date: DateTime(1), age: 0);
 }

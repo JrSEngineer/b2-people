@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:b2_people/src/models/basic_person_model.dart';
 import 'package:b2_people/src/models/person_gender.dart';
 import 'package:b2_people/src/view_models/auth/auth_controller.dart';
 import 'package:b2_people/src/view_models/users/users_controller.dart';
@@ -9,31 +8,27 @@ import 'package:b2_people/src/views/strategies/users/user_page_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class UserPage extends StatefulWidget {
-  const UserPage({
-    super.key,
-    required this.user,
-  });
-
-  final BasicPersonModel user;
+class PersonPage extends StatefulWidget {
+  const PersonPage({super.key});
 
   @override
-  State<UserPage> createState() => _UserPageState();
+  State<PersonPage> createState() => _PersonPageState();
 }
 
-class _UserPageState extends State<UserPage> {
+class _PersonPageState extends State<PersonPage> {
   final _authController = Modular.get<AuthController>();
   final _usersController = Modular.get<UsersController>();
+  String personId = '';
 
   Widget _body() {
     final userPageBody = UserPageBody();
 
-    switch (widget.user.gender) {
+    switch (_usersController.person.value.gender) {
       case PersonGender.female:
-        userPageBody.setProfileStrategy(FemaleProfileStrategy(widget.user, _authController, _usersController));
+        userPageBody.setProfileStrategy(FemaleProfileStrategy(_usersController.person.value, _authController, _usersController));
         return userPageBody.renderFemaleProfile(context);
       case PersonGender.male:
-        userPageBody.setProfileStrategy(MaleProfileStrategy(widget.user, _authController, _usersController));
+        userPageBody.setProfileStrategy(MaleProfileStrategy(_usersController.person.value, _authController, _usersController));
         return userPageBody.renderMaleProfile(context);
     }
   }
@@ -44,12 +39,17 @@ class _UserPageState extends State<UserPage> {
 
     _usersController.error.addListener(_errorMessageListenable);
     _usersController.success.addListener(_profileMarkListenable);
-    _usersController.profileMarks.addListener(() {
-      setState(() {});
+
+    _usersController.person.addListener(() async {
+      personId = _usersController.person.value.id;
+
+      await _usersController.getUserMarks(personId);
+      await _usersController.verifyUserMark(personId, _authController.userEmail);
     });
 
-    _usersController.getUserMarks(widget.user.id);
-    _usersController.verifyUserMark(widget.user.id, _authController.userEmail);
+    final usedSeed = Modular.args.params['seed'];
+
+    _usersController.fetchPerson(usedSeed);
   }
 
   _errorMessageListenable() {
@@ -66,7 +66,7 @@ class _UserPageState extends State<UserPage> {
     }
   }
 
-  _profileMarkListenable() {
+  _profileMarkListenable() async {
     if (_usersController.success.value.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -77,10 +77,16 @@ class _UserPageState extends State<UserPage> {
           ),
         ),
       );
-      Modular.to.pop();
+
+      await _usersController.getUserMarks(personId);
     }
   }
 
   @override
-  Widget build(BuildContext context) => _body();
+  Widget build(BuildContext context) => AnimatedBuilder(
+    animation: _usersController,
+    builder: (_, __) {
+      return _body();
+    },
+  );
 }

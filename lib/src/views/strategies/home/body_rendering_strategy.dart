@@ -41,7 +41,6 @@ class BodyRenderingStrategy implements HomeRenderingStrategy {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xff5109F9),
           title: Text(
             'B2 People',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -101,7 +100,7 @@ class BodyRenderingStrategy implements HomeRenderingStrategy {
                         ? UserTile(
                             user: user,
                             onTap: () {
-                              Modular.to.pushNamed('../users/', arguments: user);
+                              Modular.to.pushNamed('../users/${user.usedSeed}');
                             },
                             key: const Key('user_tile'),
                           )

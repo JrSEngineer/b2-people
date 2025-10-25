@@ -27,6 +27,36 @@ void main() {
   );
 
   group(
+    'fetchPerson should',
+    () {
+      test(
+        'notify when person fetching fails',
+        () async {
+          when(() => repository.fetchPerson(any())).thenAnswer((_) async => (null, 'Mensagem de erro'));
+
+          await controller.fetchPerson('seed');
+
+          expect(controller.error.value, isNotEmpty);
+          expect(controller.error.value, equals('Mensagem de erro'));
+          expect(controller.person.value.id, isEmpty);
+        },
+      );
+
+      test(
+        'notify when person fetching completes successfully',
+        () async {
+          when(() => repository.fetchPerson(any())).thenAnswer(
+            (_) async => (personMock, null),
+          );
+
+          await controller.fetchPerson('seed');
+
+          expect(controller.person.value.id, isNotEmpty);
+        },
+      );
+    },
+  );
+  group(
     'markUserAsPrefered should',
     () {
       test(

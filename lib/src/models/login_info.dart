@@ -16,4 +16,6 @@ class LoginInfo {
     'uuid': uuid,
     'username': username,
   };
+
+  factory LoginInfo.empty() => LoginInfo(uuid: '', username: '');
 }

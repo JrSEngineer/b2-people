@@ -13,7 +13,7 @@ class UsersRepository implements IUsersRepository {
   @override
   Future<(Person?, String?)> fetchPerson(String seed) async {
     try {
-      final response = await _dio.get('https://randomuser.me/api/seed=$seed');
+      final response = await _dio.get('https://randomuser.me/api/?seed=$seed');
       final personsList = response.data['results'] as List;
 
       final personMap = personsList.first as Map<String, dynamic>;

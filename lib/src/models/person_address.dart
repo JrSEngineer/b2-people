@@ -21,7 +21,7 @@ class PersonAddress {
     city: map['city'],
     state: map['state'],
     country: map['country'],
-    postcode: map['postcode'],
+    postcode: map['postcode'].toString(),
   );
 
   Map<String, dynamic> tomap() => {
@@ -32,4 +32,6 @@ class PersonAddress {
     'country': country,
     'postcode': postcode,
   };
+
+  factory PersonAddress.empty() => PersonAddress(streetName: '', streetNumber: 0, city: '', state: '', country: '', postcode: '');
 }

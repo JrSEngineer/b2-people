@@ -19,6 +19,7 @@ class Person {
   final String cell;
   final PersonIdentifier identifier;
   final String profileImage;
+  final String naturallity;
 
   Person({
     required this.id,
@@ -33,6 +34,7 @@ class Person {
     required this.cell,
     required this.identifier,
     required this.profileImage,
+    required this.naturallity,
   });
 
   factory Person.frommap(Map<String, dynamic> map) {
@@ -57,6 +59,7 @@ class Person {
       cell: map['cell'],
       identifier: PersonIdentifier.frommap(map['id']),
       profileImage: map['picture']['large'],
+      naturallity: map['nat'],
     );
   }
 
@@ -73,4 +76,22 @@ class Person {
     'identifier': identifier.tomap(),
     'profileImage': profileImage,
   };
+
+  factory Person.empty() {
+    return Person(
+      id: '',
+      name: PersonName.empty(),
+      address: PersonAddress.empty(),
+      email: '',
+      gender: PersonGender.male,
+      login: LoginInfo.empty(),
+      dateOfBirthday: DateOfBirthday.empty(),
+      registered: RegistrationInfo.empty(),
+      phone: '',
+      cell: '',
+      identifier: PersonIdentifier(name: ''),
+      profileImage: '',
+      naturallity: '',
+    );
+  }
 }

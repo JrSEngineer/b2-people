@@ -1,4 +1,5 @@
 import 'package:b2_people/src/data/interfaces/iusers_repository.dart';
+import 'package:b2_people/src/models/person_model.dart';
 import 'package:b2_people/src/models/prefered_user_model.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +13,29 @@ class UsersController extends ChangeNotifier {
   bool isLoading = false;
   ValueNotifier<bool> hasBeenMarked = ValueNotifier(false);
 
+  ValueNotifier<Person> person = ValueNotifier(Person.empty());
+
   ValueNotifier<String> success = ValueNotifier('');
   ValueNotifier<String> error = ValueNotifier('');
+
+  Future<void> fetchPerson(String seed) async {
+    isLoading = true;
+    notifyListeners();
+
+    final (personResponse, errorMessage) = await _repository.fetchPerson(seed);
+    if (errorMessage != null) {
+      error.value = errorMessage;
+      isLoading = false;
+      notifyListeners();
+
+      return;
+    }
+
+    person.value = personResponse!;
+
+    isLoading = false;
+    notifyListeners();
+  }
 
   Future<void> markUserAsPrefered(PreferedUserModel user) async {
     isLoading = true;
