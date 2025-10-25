@@ -48,6 +48,7 @@ class _UserPageState extends State<UserPage> {
     });
 
     _usersController.getUserMarks(widget.user.id);
+    _usersController.verifyUserMark(widget.user.id, _authController.userEmail);
   }
 
   _errorMessageListenable() {

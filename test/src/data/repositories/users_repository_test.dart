@@ -57,7 +57,34 @@ void main() {
   );
 
   test(
-    'removerPreference should return true if user user is remove from preferences',
+    'verifyUserMark should return true if user user is remove from preferences and false otherwise.',
+    () async {
+      final result = await repository.markUserAsPrefered(preferedUser);
+
+      expect(result, isTrue);
+
+      final (usersResult, errorString) = await repository.getPreferedUsers('ownerpreference@email.com');
+
+      expect(usersResult, isA<List<PreferedUserModel>>());
+      expect(usersResult, isNotEmpty);
+      expect(errorString, isNull);
+
+      final hasMarkedAsFavorite = await repository.verifyUserMark(preferedUser.id, 'ownerpreference@email.com');
+
+      expect(hasMarkedAsFavorite, isTrue);
+
+      final hasBeenRemoved = await repository.removePreference(preferedUser);
+
+      expect(hasBeenRemoved, isTrue);
+
+      final hasMarkedAsFavoriteYet = await repository.verifyUserMark(preferedUser.id, 'ownerpreference@email.com');
+
+      expect(hasMarkedAsFavoriteYet, isFalse);
+    },
+  );
+
+  test(
+    'removerPreference should return true to account owner that has selected the profile as favorite.',
     () async {
       final result = await repository.markUserAsPrefered(preferedUser);
 

@@ -14,18 +14,18 @@ class PreferedUserTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final iconColor = switch (user.gender) {
+    final genderColor = switch (user.gender) {
       UserGender.female => Colors.pinkAccent,
       UserGender.male => Colors.blueAccent,
     };
 
     return ListTile(
-      shape: Border(left: BorderSide(color: iconColor, width: 4)),
-      contentPadding: EdgeInsets.zero,
+      contentPadding: EdgeInsets.only(left: 12),
       leading: Container(
         height: 36,
         width: 36,
         decoration: BoxDecoration(
+          border: Border.all(width: 2, color: genderColor),
           borderRadius: BorderRadius.circular(100),
           image: DecorationImage(
             fit: BoxFit.fill,

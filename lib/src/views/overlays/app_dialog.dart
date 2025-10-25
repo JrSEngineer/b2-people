@@ -14,7 +14,7 @@ showAppDialog(BuildContext context, String title, String content, List<Widget> a
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       title: Text(
         title,
-        style: Theme.of(context).textTheme.titleSmall,
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
         textAlign: TextAlign.center,
       ),
       content: SizedBox(
@@ -23,6 +23,7 @@ showAppDialog(BuildContext context, String title, String content, List<Widget> a
         child: Center(
           child: Text(
             content,
+            style: Theme.of(context).textTheme.bodyLarge,
             textAlign: TextAlign.center,
           ),
         ),

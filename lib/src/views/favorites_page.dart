@@ -80,7 +80,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                       shrinkWrap: true,
 
                       separatorBuilder: (context, index) {
-                        return SizedBox(height: 8);
+                        return SizedBox(height: 12);
                       },
                       itemCount: _usersController.preferedUsersList.length,
                       itemBuilder: (_, i) {

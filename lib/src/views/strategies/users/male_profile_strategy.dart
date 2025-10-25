@@ -98,26 +98,27 @@ class MaleProfileStrategy implements UserProfileStrategy {
                             ),
                           ],
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            final markedUser = PreferedUserModel(
-                              id: user.id,
-                              fullName: user.fullName,
-                              email: user.profile.email,
-                              gender: user.gender,
-                              profileImage: user.profile.profileImage,
-                              preferenceOwner: authController.userEmail,
-                            );
+                        if (!usersController.hasBeenMarked.value)
+                          ElevatedButton(
+                            onPressed: () {
+                              final markedUser = PreferedUserModel(
+                                id: user.id,
+                                fullName: user.fullName,
+                                email: user.profile.email,
+                                gender: user.gender,
+                                profileImage: user.profile.profileImage,
+                                preferenceOwner: authController.userEmail,
+                              );
 
-                            usersController.markUserAsPrefered(markedUser);
-                          },
-                          child: Text(
-                            'Favoritar',
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
+                              usersController.markUserAsPrefered(markedUser);
+                            },
+                            child: Text(
+                              'Favoritar',
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ),
                       ],
                     ),
                   ],

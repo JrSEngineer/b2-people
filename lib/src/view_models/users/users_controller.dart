@@ -10,6 +10,7 @@ class UsersController extends ChangeNotifier {
   List<PreferedUserModel> preferedUsersList = [];
   ValueNotifier<int> profileMarks = ValueNotifier(0);
   bool isLoading = false;
+  ValueNotifier<bool> hasBeenMarked = ValueNotifier(false);
 
   ValueNotifier<String> success = ValueNotifier('');
   ValueNotifier<String> error = ValueNotifier('');
@@ -52,6 +53,11 @@ class UsersController extends ChangeNotifier {
 
     isLoading = false;
     notifyListeners();
+  }
+
+  Future<void> verifyUserMark(String userId, String accountEmail) async {
+    final result = await _repository.verifyUserMark(userId, accountEmail);
+    hasBeenMarked.value = result;
   }
 
   Future<void> getPreferedUsers(String accountEmail) async {

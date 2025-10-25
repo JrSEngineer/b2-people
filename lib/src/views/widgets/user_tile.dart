@@ -1,4 +1,5 @@
 import 'package:b2_people/src/models/user_model.dart';
+import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 
 class UserTile extends StatelessWidget {
@@ -13,12 +14,7 @@ class UserTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final icon = switch (user.gender) {
-      UserGender.female => Icons.woman,
-      UserGender.male => Icons.man,
-    };
-
-    final iconColor = switch (user.gender) {
+    final genderColor = switch (user.gender) {
       UserGender.female => Colors.pinkAccent,
       UserGender.male => Colors.blueAccent,
     };
@@ -29,6 +25,7 @@ class UserTile extends StatelessWidget {
         height: 36,
         width: 36,
         decoration: BoxDecoration(
+          border: Border.all(width: 2, color: genderColor),
           borderRadius: BorderRadius.circular(100),
           image: DecorationImage(
             fit: BoxFit.fill,
@@ -44,9 +41,13 @@ class UserTile extends StatelessWidget {
       subtitle: Text(
         user.profile.email,
       ),
-      trailing: Icon(
-        icon,
-        color: iconColor,
+      trailing: CountryFlag.fromCountryCode(
+        user.address.naturallity,
+        theme: const ImageTheme(
+          height: 24,
+          width: 30,
+          shape: RoundedRectangle(4),
+        ),
       ),
       onTap: onTap,
     );

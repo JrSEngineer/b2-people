@@ -32,6 +32,16 @@ class UsersRepository implements IUsersRepository {
   }
 
   @override
+  Future<bool> verifyUserMark(String userId, String accountEmail) async {
+    try {
+      final currentProfileMarkDocument = await _firestore.collection('profiles').doc(userId).collection('marks').doc(accountEmail).get();
+      return currentProfileMarkDocument.exists;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  @override
   Future<(List<PreferedUserModel>?, String?)> getPreferedUsers(String accountEmail) async {
     try {
       final List<PreferedUserModel> preferedUsers = [];
