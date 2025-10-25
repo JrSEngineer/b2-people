@@ -45,18 +45,22 @@ Introdução à Orientação a Objetos, com uso de abstrações, encapsulamentos
 - Testes de widget;
 - Testes E2E.
 
-#### :test_tube: Cobertura de testes em 75.7%
+#### :test_tube: Cobertura de testes em 92.2%
 
 #### Packages adicionados:
     dio: ^5.9.0
     country_flags: ^4.1.0
     flutter_modular: ^6.4.1
+    google_sign_in: ^7.2.0
+    firebase_core: ^4.2.0
+    cloud_firestore: ^6.0.3
 
 #### Dependências de desenvolvimento:
     flutter_lints: ^5.0.0
     mocktail: ^1.0.4
     network_image_mock: ^2.1.1
     flutter_launcher_icons: ^0.14.4
+    fake_cloud_firestore: ^4.0.0
 
 ## :sparkles: Executando
 
@@ -85,6 +89,9 @@ Que executa o teste de inicialização com navegação para a página inicial
 
 `flutter test .\integration_test\user_page_navigation_test.dart`
 Que foi criado para selecionar o primeiro item na lista e navegar para a página do usuário selecionado.
+
+## :rotating_light: AVISO :rotating_light:
+Neste teste é necessário informar uma conta google para que o teste seja concluído com sucesso.
 
 Rode também:
 
