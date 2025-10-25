@@ -4,6 +4,9 @@ import 'package:b2_people/src/models/prefered_user_model.dart';
 import 'package:b2_people/src/view_models/auth/auth_controller.dart';
 import 'package:b2_people/src/view_models/users/users_controller.dart';
 import 'package:b2_people/src/views/strategies/users/user_rendering_strategy.dart';
+import 'package:b2_people/src/views/widgets/person_address_tab.dart';
+import 'package:b2_people/src/views/widgets/person_profile_tab.dart';
+import 'package:b2_people/src/views/widgets/person_system_tab.dart';
 import 'package:flutter/material.dart';
 
 class FemaleProfileStrategy implements UserProfileStrategy {
@@ -38,9 +41,6 @@ class FemaleProfileStrategy implements UserProfileStrategy {
         ],
       ),
     ];
-
-    final baseDateParts = person.dateOfBirthday.date.toIso8601String().split('T').first.split('-');
-    final birthdate = '${baseDateParts[2]}-${baseDateParts[1]}-${baseDateParts[0]}';
 
     return DefaultTabController(
       length: personInfoSections.length,
@@ -90,110 +90,9 @@ class FemaleProfileStrategy implements UserProfileStrategy {
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
           child: TabBarView(
             children: [
-              Column(
-                spacing: 12,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    height: MediaQuery.sizeOf(context).width * 0.3,
-                    width: MediaQuery.sizeOf(context).width * 0.3,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(image: NetworkImage(person.profileImage), fit: BoxFit.fill),
-                    ),
-                  ),
-                  Text(person.email, style: Theme.of(context).textTheme.bodyLarge),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                      Text(
-                        '${usersController.profileMarks.value}',
-                        style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Wrap(
-                    runSpacing: 12,
-                    spacing: 12,
-                    direction: Axis.horizontal,
-                    children: [
-                      Chip(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(40)),
-                        label: Row(
-                          spacing: 12,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.person_search_outlined, color: Colors.grey.shade900),
-                            Text(person.name.title, style: Theme.of(context).textTheme.bodyLarge),
-                          ],
-                        ),
-                      ),
-                      Chip(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(40)),
-                        label: Row(
-                          spacing: 12,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.link, color: Colors.grey.shade900),
-                            Text('# ${person.login.username}', style: Theme.of(context).textTheme.bodyLarge),
-                          ],
-                        ),
-                      ),
-                      Chip(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(40)),
-                        label: Row(
-                          spacing: 12,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.phone, color: Colors.grey.shade900),
-                            Text(person.phone, style: Theme.of(context).textTheme.bodyLarge),
-                          ],
-                        ),
-                      ),
-                      Chip(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(40)),
-                        label: Row(
-                          spacing: 12,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.phone_android, color: Colors.grey.shade900),
-                            Text(person.cell, style: Theme.of(context).textTheme.bodyLarge),
-                          ],
-                        ),
-                      ),
-                      Chip(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(40)),
-                        label: Row(
-                          spacing: 12,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.cake_outlined, color: Colors.grey.shade900),
-                            Text('${person.dateOfBirthday.age}', style: Theme.of(context).textTheme.bodyLarge),
-                          ],
-                        ),
-                      ),
-                      Chip(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(40)),
-                        label: Row(
-                          spacing: 12,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.cake_outlined, color: Colors.grey.shade900),
-                            Text(birthdate, style: Theme.of(context).textTheme.bodyLarge),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              PersonProfileTab(person: person, profileMarks: usersController.profileMarks.value),
+              PersonAddressTab(person: person),
+              PersonSystemTab(person: person),
             ],
           ),
         ),
