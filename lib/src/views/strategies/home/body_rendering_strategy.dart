@@ -103,6 +103,16 @@ class BodyRenderingStrategy implements HomeRenderingStrategy {
           ],
         ),
       ),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Modular.to.pushNamed('../users/favorites');
+        },
+        child: Icon(
+          Icons.star,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }
