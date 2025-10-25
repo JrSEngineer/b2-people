@@ -6,11 +6,10 @@ import 'package:b2_people/src/models/person_gender.dart';
 import 'package:b2_people/src/models/person_identifier.dart';
 import 'package:b2_people/src/models/person_model.dart';
 import 'package:b2_people/src/models/person_name.dart';
-import 'package:b2_people/src/models/prefered_user_model.dart';
 import 'package:b2_people/src/models/registration_info.dart';
 import 'package:uuid/uuid.dart';
 
-final userMapsResultsMock = {
+final personMapsResultsMock = {
   "results": [
     {
       "gender": "female",
@@ -84,7 +83,7 @@ final userMapsResultsMock = {
   "info": {"seed": "56d27f4a53bd5441", "results": 1, "page": 1, "version": "1.4"},
 };
 
-final basicUser = BasicPersonModel(
+final basicPerson = BasicPersonModel(
   id: Uuid().v4(),
   fullName: 'Robert Jenkins',
   gender: PersonGender.male,
@@ -94,7 +93,7 @@ final basicUser = BasicPersonModel(
   profileImage: 'https://randomuser.me/api/portraits/men/75.jpg',
 );
 
-final basicUser1 = BasicPersonModel(
+final basicPerson1 = BasicPersonModel(
   id: Uuid().v4(),
   fullName: 'Laura Stevens',
   gender: PersonGender.female,
@@ -104,9 +103,9 @@ final basicUser1 = BasicPersonModel(
   profileImage: 'https://randomuser.me/api/portraits/women/68.jpg',
 );
 
-final usersList = [basicUser, basicUser1];
+final personsList = [basicPerson, basicPerson1];
 
-final personMock = Person(
+final personMock = PersonModel(
   id: '249e72c3-3526-4a4c-b068-ce0ca5c9c86a',
   name: PersonName(
     title: 'Mrs',
@@ -136,31 +135,48 @@ final personMock = Person(
   ),
   phone: '37675467',
   cell: '49965810',
-  identifier: PersonIdentifier(
-    name: 'FN',
-    value: '19114638687',
-  ),
+  identifier: PersonIdentifier(name: 'FN'),
   profileImage: 'https://randomuser.me/api/portraits/women/62.jpg',
   gender: PersonGender.female,
   naturallity: 'US',
+  usedSeed: 'used_seed',
 );
 
-final preferedUser = PreferedUserModel(
-  id: 'user_id',
-  fullName: 'user_name',
-  email: 'user@email.com',
+final personMock1 = PersonModel(
+  id: '249e72c3-3526-4a4c-b068-ce0ca5c9c86a',
+  name: PersonName(
+    title: 'Mrs',
+    first: 'Celin',
+    last: 'Grimsmo',
+  ),
+  address: PersonAddress(
+    streetName: 'Damstredet',
+    streetNumber: 4971,
+    city: 'Sulitjelma',
+    state: 'Finnmark - Finnmárku',
+    country: 'Norway',
+    postcode: '0503',
+  ),
+  email: 'celin.grimsmo@example.com',
+  login: LoginInfo(
+    uuid: '249e72c3-3526-4a4c-b068-ce0ca5c9c86a',
+    username: 'orangepeacock937',
+  ),
+  dateOfBirthday: DateOfBirthday(
+    date: DateTime.parse('1946-11-19T05:09:30.415Z'),
+    age: 78,
+  ),
+  registered: RegistrationInfo(
+    date: DateTime.parse('2018-05-30T01:34:21.394Z'),
+    age: 7,
+  ),
+  phone: '37675467',
+  cell: '49965810',
+  identifier: PersonIdentifier(name: 'FN'),
+  profileImage: 'https://randomuser.me/api/portraits/women/62.jpg',
   gender: PersonGender.female,
-  profileImage: 'image',
-  preferenceOwner: 'ownerpreference@email.com',
+  naturallity: 'US',
+  usedSeed: 'used_seed',
 );
 
-final seccondPreferedUser = PreferedUserModel(
-  id: 'user_id',
-  fullName: 'user_name',
-  email: 'user@email.com',
-  gender: PersonGender.male,
-  profileImage: 'image',
-  preferenceOwner: 'ownerpreference@email.com',
-);
-
-final preferedUsersListMock = [preferedUser, seccondPreferedUser];
+final personModelList = [personMock, personMock1];

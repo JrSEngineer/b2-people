@@ -1,6 +1,6 @@
 import 'package:b2_people/src/modules/auth_module.dart';
 import 'package:b2_people/src/modules/home_module.dart';
-import 'package:b2_people/src/modules/users_module.dart';
+import 'package:b2_people/src/modules/persons_module.dart';
 import 'package:b2_people/src/views/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -14,6 +14,6 @@ class AppModule extends Module {
     );
     r.module('/auth/', module: AuthModule());
     r.module('/home/', module: HomeModule());
-    r.module('/users/', module: UsersModule());
+    r.module('/persons/', module: PersonsModule());
   }
 }

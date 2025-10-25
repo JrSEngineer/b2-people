@@ -1,21 +1,22 @@
-import 'package:b2_people/src/data/interfaces/iusers_repository.dart';
-import 'package:b2_people/src/models/prefered_user_model.dart';
-import 'package:b2_people/src/view_models/users/users_controller.dart';
+import 'package:b2_people/src/data/interfaces/ipersons_repository.dart';
+import 'package:b2_people/src/models/person_model.dart';
+import 'package:b2_people/src/models/prefered_person_model.dart';
+import 'package:b2_people/src/view_models/persons/persons_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../mocks/users.dart';
+import '../../../mocks/persons.dart';
 
-class UsersRepositoryMock extends Mock implements IUsersRepository {}
+class UsersRepositoryMock extends Mock implements IPersonsRepository {}
 
 void main() {
-  late IUsersRepository repository;
-  late UsersController controller;
+  late IPersonsRepository repository;
+  late PersonsController controller;
 
   setUpAll(
     () {
       repository = UsersRepositoryMock();
-      controller = UsersController(repository);
+      controller = PersonsController(repository);
     },
   );
 
@@ -62,9 +63,9 @@ void main() {
       test(
         'notify when a preference not occurs as expected (updates "error" value)',
         () async {
-          when(() => repository.markUserAsPrefered(preferedUser)).thenAnswer((_) async => (false));
+          when(() => repository.markPersonAsPrefered(any(), any())).thenAnswer((_) async => (false));
 
-          await controller.markUserAsPrefered(preferedUser);
+          await controller.markUserAsPrefered('preferedPerson', personMock);
 
           expect(controller.error.value, isNotEmpty);
           expect(controller.error.value, equals('Erro ao favoritar perfil de usuário.'));
@@ -75,9 +76,9 @@ void main() {
       test(
         'notify when a preference is set successfully (updates "success" value)',
         () async {
-          when(() => repository.markUserAsPrefered(preferedUser)).thenAnswer((_) async => (true));
+          when(() => repository.markPersonAsPrefered(any(), any())).thenAnswer((_) async => (true));
 
-          await controller.markUserAsPrefered(preferedUser);
+          await controller.markUserAsPrefered('preferedPerson', personMock);
 
           expect(controller.success.value, isNotEmpty);
           expect(controller.success.value, equals('Perfil de usuário marcado como favorito.'));
@@ -92,9 +93,9 @@ void main() {
       test(
         'notify when a preference is not removed (updates "error" value)',
         () async {
-          when(() => repository.removePreference(preferedUser)).thenAnswer((_) async => (false));
+          when(() => repository.removePreference(any(), any())).thenAnswer((_) async => (false));
 
-          await controller.removePreference(preferedUser);
+          await controller.removePreference('accountEmail', personMock);
 
           expect(controller.error.value, isNotEmpty);
           expect(controller.error.value, equals('Erro ao remover preferência.'));
@@ -105,9 +106,9 @@ void main() {
       test(
         'notify when a preference is removed successfully (updates "success" value)',
         () async {
-          when(() => repository.removePreference(preferedUser)).thenAnswer((_) async => (true));
+          when(() => repository.removePreference(any(), any())).thenAnswer((_) async => (true));
 
-          await controller.removePreference(preferedUser);
+          await controller.removePreference('accountEmail', personMock);
 
           expect(controller.success.value, isNotEmpty);
           expect(controller.success.value, equals('Preferência de perfil removida.'));
@@ -118,14 +119,14 @@ void main() {
   );
 
   group(
-    'getPreferedUsers should',
+    'getPreferedPersons should',
     () {
       test(
         'notify when prefered users fetching fails (return a record with null value and error string message)',
         () async {
-          when(() => repository.getPreferedUsers(any())).thenAnswer((_) async => (null, 'Erro ao obter perfis marcados como favoritos.'));
+          when(() => repository.getPreferedPersons(any())).thenAnswer((_) async => (null, 'Erro ao obter perfis marcados como favoritos.'));
 
-          await controller.getPreferedUsers('user@email.com');
+          await controller.getPreferedPersons('user@email.com');
 
           expect(controller.error.value, isNotEmpty);
           expect(controller.error.value, equals('Erro ao obter perfis marcados como favoritos.'));
@@ -136,26 +137,27 @@ void main() {
       test(
         'retrieve favorite profiles successfully (adds up fetched users to preferedUsersList)',
         () async {
-          when(() => repository.getPreferedUsers(any())).thenAnswer((_) async => (preferedUsersListMock, null));
+          when(() => repository.getPreferedPersons(any())).thenAnswer((_) async => (personModelList, null));
 
-          await controller.getPreferedUsers('user@email.com');
+          await controller.getPreferedPersons('user@email.com');
 
           expect(controller.error.value, isEmpty);
           expect(controller.preferedUsersList, isNotEmpty);
           expect(controller.preferedUsersList.length, equals(2));
-          expect(controller.preferedUsersList, isA<List<PreferedUserModel>>());
-          expect(controller.preferedUsersList.first, isA<PreferedUserModel>());
+          expect(controller.preferedUsersList, isA<List<PersonModel>>());
+          expect(controller.preferedUsersList.first, isA<PersonModel>());
         },
       );
     },
   );
+
   group(
     'getUserMarks should',
     () {
       test(
         'notify when a profile preferences is not obtained (return a record with null value and error string message)',
         () async {
-          when(() => repository.getUserMarks(any())).thenAnswer((_) async => (null, 'Erro ao obter marcações do usuário'));
+          when(() => repository.getPersonMarks(any())).thenAnswer((_) async => (null, 'Erro ao obter marcações do usuário'));
 
           await controller.getUserMarks('user@email.com');
 
@@ -168,7 +170,7 @@ void main() {
       test(
         'notify when a profile preferences are recovered successfully (updates "success" value)',
         () async {
-          when(() => repository.getUserMarks(any())).thenAnswer((_) async => (2, null));
+          when(() => repository.getPersonMarks(any())).thenAnswer((_) async => (2, null));
 
           await controller.getUserMarks('user@email.com');
 

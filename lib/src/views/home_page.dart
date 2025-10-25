@@ -4,7 +4,6 @@ import 'package:b2_people/src/view_models/auth/auth_controller.dart';
 import 'package:b2_people/src/view_models/home/home_controller.dart';
 import 'package:b2_people/src/views/strategies/home/body_rendering_strategy.dart';
 import 'package:b2_people/src/views/strategies/home/home_body.dart';
-import 'package:b2_people/src/views/strategies/home/loading_rendering_strategy.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -40,19 +39,11 @@ class _HomePageState extends State<HomePage> {
     return AnimatedBuilder(
       animation: _homeController,
       builder: (_, __) {
-        if (_homeController.isLoading) {
-          body.setRenderingStrategy(LoadingRenderingStrategy());
-          return body.renderLoading(context);
-        } else {
-          body.setRenderingStrategy(BodyRenderingStrategy(_authController, _homeController));
-          return body.renderUsersList(context);
-        }
+        body.setRenderingStrategy(BodyRenderingStrategy(_authController, _homeController));
+        return body.renderUsersList(context);
       },
     );
   }
-
-  @override
-  Widget build(BuildContext context) => _body();
 
   _usersFetchingErrorListenable() {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -65,6 +56,9 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  @override
+  Widget build(BuildContext context) => _body();
 
   @override
   void dispose() {

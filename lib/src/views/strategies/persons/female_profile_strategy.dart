@@ -1,20 +1,19 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:b2_people/src/models/person_model.dart';
-import 'package:b2_people/src/models/prefered_user_model.dart';
 import 'package:b2_people/src/view_models/auth/auth_controller.dart';
-import 'package:b2_people/src/view_models/users/users_controller.dart';
-import 'package:b2_people/src/views/strategies/users/user_rendering_strategy.dart';
+import 'package:b2_people/src/view_models/persons/persons_controller.dart';
+import 'package:b2_people/src/views/strategies/persons/person_rendering_strategy.dart';
 import 'package:b2_people/src/views/widgets/person_address_tab.dart';
 import 'package:b2_people/src/views/widgets/person_profile_tab.dart';
 import 'package:b2_people/src/views/widgets/person_system_tab.dart';
 import 'package:flutter/material.dart';
 
-class FemaleProfileStrategy implements UserProfileStrategy {
+class FemaleProfileStrategy implements PersonProfileStrategy {
   FemaleProfileStrategy(this.person, this.authController, this.usersController);
 
-  final Person person;
+  final PersonModel person;
   final AuthController authController;
-  final UsersController usersController;
+  final PersonsController usersController;
 
   @override
   Widget render(BuildContext context) {
@@ -42,6 +41,8 @@ class FemaleProfileStrategy implements UserProfileStrategy {
       ),
     ];
 
+    final displayIcon = usersController.hasBeenMarked.value ? Icons.star : Icons.star_border;
+
     return DefaultTabController(
       length: personInfoSections.length,
       initialIndex: 0,
@@ -68,19 +69,14 @@ class FemaleProfileStrategy implements UserProfileStrategy {
           ),
           actions: [
             IconButton(
-              onPressed: () {
-                final markedUser = PreferedUserModel(
-                  id: person.id,
-                  fullName: '${person.name.first} ${person.name.last}',
-                  email: person.email,
-                  gender: person.gender,
-                  profileImage: person.profileImage,
-                  preferenceOwner: authController.userEmail,
-                );
-
-                usersController.markUserAsPrefered(markedUser);
-              },
-              icon: Icon(Icons.star),
+              onPressed: usersController.hasBeenMarked.value
+                  ? () async {
+                      await usersController.removePreference(authController.userEmail, person);
+                    }
+                  : () async {
+                      await usersController.markUserAsPrefered(authController.userEmail, person);
+                    },
+              icon: Icon(displayIcon),
             ),
           ],
         ),

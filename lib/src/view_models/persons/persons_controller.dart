@@ -1,19 +1,18 @@
-import 'package:b2_people/src/data/interfaces/iusers_repository.dart';
+import 'package:b2_people/src/data/interfaces/ipersons_repository.dart';
 import 'package:b2_people/src/models/person_model.dart';
-import 'package:b2_people/src/models/prefered_user_model.dart';
 import 'package:flutter/material.dart';
 
-class UsersController extends ChangeNotifier {
-  UsersController(this._repository);
+class PersonsController extends ChangeNotifier {
+  PersonsController(this._repository);
 
-  final IUsersRepository _repository;
+  final IPersonsRepository _repository;
 
-  List<PreferedUserModel> preferedUsersList = [];
+  List<PersonModel> preferedUsersList = [];
   ValueNotifier<int> profileMarks = ValueNotifier(0);
   bool isLoading = false;
   ValueNotifier<bool> hasBeenMarked = ValueNotifier(false);
 
-  ValueNotifier<Person> person = ValueNotifier(Person.empty());
+  ValueNotifier<PersonModel> person = ValueNotifier(PersonModel.empty());
 
   ValueNotifier<String> success = ValueNotifier('');
   ValueNotifier<String> error = ValueNotifier('');
@@ -37,11 +36,11 @@ class UsersController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> markUserAsPrefered(PreferedUserModel user) async {
+  Future<void> markUserAsPrefered(String accountEmail, PersonModel user) async {
     isLoading = true;
     notifyListeners();
 
-    final hasBeenMarkedAsPrefered = await _repository.markUserAsPrefered(user);
+    final hasBeenMarkedAsPrefered = await _repository.markPersonAsPrefered(accountEmail, user);
 
     if (hasBeenMarkedAsPrefered) {
       success.value = 'Perfil de usuário marcado como favorito.';
@@ -57,11 +56,11 @@ class UsersController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> removePreference(PreferedUserModel user) async {
+  Future<void> removePreference(String accountEmail, PersonModel user) async {
     isLoading = true;
     notifyListeners();
 
-    final hasPreferenceRemoved = await _repository.removePreference(user);
+    final hasPreferenceRemoved = await _repository.removePreference(accountEmail, user);
 
     if (hasPreferenceRemoved) {
       success.value = 'Preferência de perfil removida.';
@@ -78,14 +77,14 @@ class UsersController extends ChangeNotifier {
   }
 
   Future<void> verifyUserMark(String userId, String accountEmail) async {
-    final result = await _repository.verifyUserMark(userId, accountEmail);
+    final result = await _repository.verifyPersonMark(userId, accountEmail);
     hasBeenMarked.value = result;
   }
 
-  Future<void> getPreferedUsers(String accountEmail) async {
+  Future<void> getPreferedPersons(String accountEmail) async {
     isLoading = true;
     notifyListeners();
-    final (preferedUsers, errorMessage) = await _repository.getPreferedUsers(accountEmail);
+    final (preferedUsers, errorMessage) = await _repository.getPreferedPersons(accountEmail);
 
     if (errorMessage != null) {
       error.value = errorMessage;
@@ -97,14 +96,14 @@ class UsersController extends ChangeNotifier {
 
     preferedUsersList.addAll(preferedUsers!);
 
-    isLoading = true;
+    isLoading = false;
     notifyListeners();
   }
 
   Future<void> getUserMarks(String userId) async {
     isLoading = true;
     notifyListeners();
-    final (profileMarksAmount, errorMessage) = await _repository.getUserMarks(userId);
+    final (profileMarksAmount, errorMessage) = await _repository.getPersonMarks(userId);
 
     if (errorMessage != null) {
       error.value = errorMessage;
@@ -116,7 +115,7 @@ class UsersController extends ChangeNotifier {
 
     profileMarks.value = profileMarksAmount!;
 
-    isLoading = true;
+    isLoading = false;
     notifyListeners();
   }
 }

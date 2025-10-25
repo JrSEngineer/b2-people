@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
 
-abstract interface class UserProfileStrategy {
+abstract interface class PersonProfileStrategy {
   Widget render(BuildContext context);
 }

@@ -1,5 +1,5 @@
 import 'package:b2_people/src/view_models/auth/auth_controller.dart';
-import 'package:b2_people/src/view_models/users/users_controller.dart';
+import 'package:b2_people/src/view_models/persons/persons_controller.dart';
 import 'package:b2_people/src/views/overlays/app_dialog.dart';
 import 'package:b2_people/src/views/widgets/prefered_user_tile.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ class FavoritesPage extends StatefulWidget {
 
 class _FavoritesPageState extends State<FavoritesPage> {
   final _authController = Modular.get<AuthController>();
-  final _usersController = Modular.get<UsersController>();
+  final _usersController = Modular.get<PersonsController>();
 
   @override
   void initState() {
@@ -22,7 +22,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
     _usersController.success.addListener(_profileMarkListenable);
 
     final accountEmail = _authController.userEmail;
-    _usersController.getPreferedUsers(accountEmail);
+    _usersController.getPreferedPersons(accountEmail);
   }
 
   _profileMarkListenable() {
@@ -97,7 +97,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                 TextButton(
                                   onPressed: () async {
                                     Navigator.pop(context);
-                                    await _usersController.removePreference(user);
+                                    await _usersController.removePreference(_authController.userEmail, user);
                                   },
                                   child: Text('SIM', style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
                                 ),

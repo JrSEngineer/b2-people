@@ -1,5 +1,5 @@
 import 'package:b2_people/src/models/person_gender.dart';
-import 'package:b2_people/src/models/prefered_user_model.dart';
+import 'package:b2_people/src/models/person_model.dart';
 import 'package:flutter/material.dart';
 
 class PreferedUserTile extends StatelessWidget {
@@ -9,7 +9,7 @@ class PreferedUserTile extends StatelessWidget {
     super.key,
   });
 
-  final PreferedUserModel user;
+  final PersonModel user;
   final Function()? onTap;
 
   @override
@@ -36,7 +36,7 @@ class PreferedUserTile extends StatelessWidget {
         ),
       ),
       title: Text(
-        user.fullName,
+        '${user.name.first} ${user.name.last}',
       ),
       subtitle: Text(
         user.email,

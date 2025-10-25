@@ -1,29 +1,29 @@
-import 'package:b2_people/src/data/repositories/users_repository_impl.dart';
-import 'package:b2_people/src/models/prefered_user_model.dart';
+import 'package:b2_people/src/data/repositories/persons_repository_impl.dart';
+import 'package:b2_people/src/models/person_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../mocks/users.dart';
+import '../../../mocks/persons.dart';
 import 'home_repository_impl_test.dart';
 
 void main() {
   late Dio dio;
   late FirebaseFirestore firebase;
-  late UsersRepository repository;
+  late PersonsRepositoryImpl repository;
 
   setUpAll(
     () {
       dio = DioMock();
       firebase = FakeFirebaseFirestore();
-      repository = UsersRepository(dio, firebase);
+      repository = PersonsRepositoryImpl(dio, firebase);
     },
   );
 
   group(
-    'fetchPeron should',
+    'fetchPerson should',
     () {
       test(
         'return a record with a null value and an error string message when person fetching fails',
@@ -61,7 +61,7 @@ void main() {
             (_) async => Response(
               requestOptions: RequestOptions(),
               statusCode: 200,
-              data: userMapsResultsMock,
+              data: personMapsResultsMock,
             ),
           );
 
@@ -80,64 +80,67 @@ void main() {
   test(
     'markUserAsPrefered should return true if user user is saved successfully',
     () async {
-      final result = await repository.markUserAsPrefered(preferedUser);
+      final result = await repository.markPersonAsPrefered('accountEmail', personMock);
 
       expect(result, isTrue);
     },
   );
 
   test(
-    'getPreferedUsers should retrieve a list of users previously marked as prefered (returns a List<PreferedUserModel>)',
+    'getPreferedPersons should retrieve a list of users previously marked as prefered (returns a List<PreferedUserModel>)',
     () async {
-      final markResult = await repository.markUserAsPrefered(preferedUser);
+      final accountEmail = 'ownerpreference@email.com';
+      final markResult = await repository.markPersonAsPrefered(accountEmail, personMock);
 
       expect(markResult, isTrue);
 
-      final (result, errorString) = await repository.getPreferedUsers('ownerpreference@email.com');
+      final (result, errorString) = await repository.getPreferedPersons(accountEmail);
 
-      expect(result, isA<List<PreferedUserModel>>());
+      expect(result, isA<List<PersonModel>>());
       expect(result, isNotEmpty);
       expect(errorString, isNull);
     },
   );
 
   test(
-    'getPreferedUsers retrieve a list of users previously marked as prefered (returns a List<PreferedUserModel>)',
+    'getPreferedPersons retrieve a list of users previously marked as prefered (returns a List<PreferedUserModel>)',
     () async {
-      final markResult = await repository.markUserAsPrefered(preferedUser);
+      final accountEmail = 'ownerpreference@email.com';
+      final markResult = await repository.markPersonAsPrefered(accountEmail, personMock);
 
       expect(markResult, isTrue);
 
-      final (result, errorString) = await repository.getPreferedUsers('ownerpreference@email.com');
+      final (result, errorString) = await repository.getPreferedPersons(accountEmail);
 
-      expect(result, isA<List<PreferedUserModel>>());
+      expect(result, isA<List<PersonModel>>());
       expect(result, isNotEmpty);
       expect(errorString, isNull);
     },
   );
 
   test(
-    'verifyUserMark should return true if user user is remove from preferences and false otherwise.',
+    'verifyUserMark should return true if person is remove from preferences and false otherwise.',
     () async {
-      final result = await repository.markUserAsPrefered(preferedUser);
+      final accountEmail = 'ownerpreference@email.com';
+      final result = await repository.markPersonAsPrefered(accountEmail, personMock);
 
       expect(result, isTrue);
 
-      final (usersResult, errorString) = await repository.getPreferedUsers('ownerpreference@email.com');
+      final (usersResult, errorString) = await repository.getPreferedPersons(accountEmail);
 
-      expect(usersResult, isA<List<PreferedUserModel>>());
+      expect(usersResult, isA<List<PersonModel>>());
       expect(usersResult, isNotEmpty);
       expect(errorString, isNull);
 
-      final hasMarkedAsFavorite = await repository.verifyUserMark(preferedUser.id, 'ownerpreference@email.com');
+      final hasMarkedAsFavorite = await repository.verifyPersonMark(personMock.id, accountEmail);
 
       expect(hasMarkedAsFavorite, isTrue);
 
-      final hasBeenRemoved = await repository.removePreference(preferedUser);
+      final hasBeenRemoved = await repository.removePreference(accountEmail, personMock);
 
       expect(hasBeenRemoved, isTrue);
 
-      final hasMarkedAsFavoriteYet = await repository.verifyUserMark(preferedUser.id, 'ownerpreference@email.com');
+      final hasMarkedAsFavoriteYet = await repository.verifyPersonMark(personMock.id, accountEmail);
 
       expect(hasMarkedAsFavoriteYet, isFalse);
     },
@@ -146,23 +149,24 @@ void main() {
   test(
     'removerPreference should return true to account owner that has selected the profile as favorite.',
     () async {
-      final result = await repository.markUserAsPrefered(preferedUser);
+      final accountEmail = 'ownerpreference@email.com';
+      final result = await repository.markPersonAsPrefered(accountEmail, personMock);
 
       expect(result, isTrue);
 
-      final (usersResult, errorString) = await repository.getPreferedUsers('ownerpreference@email.com');
+      final (usersResult, errorString) = await repository.getPreferedPersons('ownerpreference@email.com');
 
-      expect(usersResult, isA<List<PreferedUserModel>>());
+      expect(usersResult, isA<List<PersonModel>>());
       expect(usersResult, isNotEmpty);
       expect(errorString, isNull);
 
-      final removingResult = await repository.removePreference(preferedUser);
+      final removingResult = await repository.removePreference(accountEmail, personMock);
 
       expect(removingResult, isTrue);
 
-      final (removedUsersResult, _) = await repository.getPreferedUsers('ownerpreference@email.com');
+      final (removedUsersResult, _) = await repository.getPreferedPersons(accountEmail);
 
-      expect(removedUsersResult, isA<List<PreferedUserModel>>());
+      expect(removedUsersResult, isA<List<PersonModel>>());
       expect(removedUsersResult, isEmpty);
     },
   );
@@ -170,17 +174,18 @@ void main() {
   test(
     'getUserMarks should retrieve the amount of preferences of a single user (returns an int with the value)',
     () async {
-      final markResult = await repository.markUserAsPrefered(preferedUser);
+      final accountEmail = 'ownerpreference@email.com';
+      final markResult = await repository.markPersonAsPrefered(accountEmail, personMock1);
 
       expect(markResult, isTrue);
 
-      final (result, errorString) = await repository.getPreferedUsers('ownerpreference@email.com');
+      final (result, errorString) = await repository.getPreferedPersons(accountEmail);
 
-      expect(result, isA<List<PreferedUserModel>>());
+      expect(result, isA<List<PersonModel>>());
       expect(result, isNotEmpty);
       expect(errorString, isNull);
 
-      final (markAmount, error) = await repository.getUserMarks('user_id');
+      final (markAmount, error) = await repository.getPersonMarks(personMock1.id);
 
       expect(markAmount, isA<int>());
       expect(markAmount, isNotNull);

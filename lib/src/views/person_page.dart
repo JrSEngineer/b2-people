@@ -1,10 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:b2_people/src/models/person_gender.dart';
 import 'package:b2_people/src/view_models/auth/auth_controller.dart';
-import 'package:b2_people/src/view_models/users/users_controller.dart';
-import 'package:b2_people/src/views/strategies/users/female_profile_strategy.dart';
-import 'package:b2_people/src/views/strategies/users/male_profile_strategy.dart';
-import 'package:b2_people/src/views/strategies/users/user_page_body.dart';
+import 'package:b2_people/src/view_models/persons/persons_controller.dart';
+import 'package:b2_people/src/views/strategies/persons/female_profile_strategy.dart';
+import 'package:b2_people/src/views/strategies/persons/male_profile_strategy.dart';
+import 'package:b2_people/src/views/strategies/persons/person_page_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -17,11 +17,11 @@ class PersonPage extends StatefulWidget {
 
 class _PersonPageState extends State<PersonPage> {
   final _authController = Modular.get<AuthController>();
-  final _usersController = Modular.get<UsersController>();
+  final _usersController = Modular.get<PersonsController>();
   String personId = '';
 
   Widget _body() {
-    final userPageBody = UserPageBody();
+    final userPageBody = PersonPageBody();
 
     switch (_usersController.person.value.gender) {
       case PersonGender.female:
@@ -56,6 +56,7 @@ class _PersonPageState extends State<PersonPage> {
     if (_usersController.error.value.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          duration: const Duration(seconds: 3),
           backgroundColor: Colors.red.shade800,
           content: Text(
             _usersController.error.value,
@@ -70,6 +71,7 @@ class _PersonPageState extends State<PersonPage> {
     if (_usersController.success.value.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          duration: const Duration(seconds: 2),
           backgroundColor: Colors.green.shade900,
           content: Text(
             _usersController.success.value,
@@ -79,12 +81,18 @@ class _PersonPageState extends State<PersonPage> {
       );
 
       await _usersController.getUserMarks(personId);
+      await _usersController.verifyUserMark(personId, _authController.userEmail);
     }
   }
 
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
-    animation: _usersController,
+    animation: Listenable.merge(
+      [
+        _usersController,
+        _usersController.hasBeenMarked,
+      ],
+    ),
     builder: (_, __) {
       return _body();
     },

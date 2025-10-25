@@ -100,7 +100,7 @@ class BodyRenderingStrategy implements HomeRenderingStrategy {
                         ? UserTile(
                             user: user,
                             onTap: () {
-                              Modular.to.pushNamed('../users/${user.usedSeed}');
+                              Modular.to.pushNamed('../persons/${user.usedSeed}');
                             },
                             key: const Key('user_tile'),
                           )
@@ -135,7 +135,7 @@ class BodyRenderingStrategy implements HomeRenderingStrategy {
 
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Modular.to.pushNamed('../users/favorites');
+            Modular.to.pushNamed('../persons/favorites');
           },
           child: Icon(
             Icons.storage,

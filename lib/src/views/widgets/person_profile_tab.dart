@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class PersonProfileTab extends StatefulWidget {
   const PersonProfileTab({required this.person, required this.profileMarks, super.key});
 
-  final Person person;
+  final PersonModel person;
   final int profileMarks;
 
   @override

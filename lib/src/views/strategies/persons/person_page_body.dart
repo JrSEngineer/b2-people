@@ -1,10 +1,10 @@
-import 'package:b2_people/src/views/strategies/users/user_rendering_strategy.dart';
+import 'package:b2_people/src/views/strategies/persons/person_rendering_strategy.dart';
 import 'package:flutter/material.dart';
 
-class UserPageBody {
-  UserProfileStrategy? _strategy;
+class PersonPageBody {
+  PersonProfileStrategy? _strategy;
 
-  void setProfileStrategy(UserProfileStrategy strategy) {
+  void setProfileStrategy(PersonProfileStrategy strategy) {
     _strategy = strategy;
   }
 

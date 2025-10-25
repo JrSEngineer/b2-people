@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class PersonAddressTab extends StatefulWidget {
   const PersonAddressTab({required this.person, super.key});
 
-  final Person person;
+  final PersonModel person;
 
   @override
   State<PersonAddressTab> createState() => _PersonAddressTabState();

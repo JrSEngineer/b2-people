@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class PersonSystemTab extends StatefulWidget {
   const PersonSystemTab({required this.person, super.key});
 
-  final Person person;
+  final PersonModel person;
 
   @override
   State<PersonSystemTab> createState() => _PersonSystemTabState();
