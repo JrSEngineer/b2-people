@@ -48,9 +48,21 @@ class HomeController extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
+    if (usersList.isEmpty) {
+      final (savedPerson, _) = await _repository.getSavedPersons();
+
+      if (savedPerson != null) {
+        usersList.addAll(savedPerson);
+      }
+      isLoading = false;
+      notifyListeners();
+
+      await Future.delayed(const Duration(seconds: 5));
+    }
+
     final seed = Uuid().v4();
 
-    final (users, errorMessage) = await _repository.getUsers(seed, page, results);
+    final (users, errorMessage) = await _repository.getPersons(seed, page, results);
 
     if (errorMessage != null) {
       error.value = errorMessage;

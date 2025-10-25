@@ -6,7 +6,7 @@ import 'package:b2_people/src/models/person_identifier.dart';
 import 'package:b2_people/src/models/person_name.dart';
 import 'package:b2_people/src/models/registration_info.dart';
 
-class Person {
+class PersonModel {
   final String id;
   final PersonName name;
   final PersonAddress address;
@@ -20,8 +20,9 @@ class Person {
   final PersonIdentifier identifier;
   final String profileImage;
   final String naturallity;
+  String usedSeed;
 
-  Person({
+  PersonModel({
     required this.id,
     required this.name,
     required this.address,
@@ -35,9 +36,10 @@ class Person {
     required this.identifier,
     required this.profileImage,
     required this.naturallity,
+    required this.usedSeed,
   });
 
-  factory Person.frommap(Map<String, dynamic> map) {
+  factory PersonModel.fromMap(Map<String, dynamic> map) {
     final genderStringValue = map['gender'];
 
     final gender = switch (genderStringValue) {
@@ -46,39 +48,62 @@ class Person {
       _ => PersonGender.female,
     };
 
-    return Person(
+    return PersonModel(
       id: map['login']['uuid'],
-      name: PersonName.frommap(map['name']),
-      address: PersonAddress.frommap(map['location']),
+      name: PersonName.fromMap(map['name']),
+      address: PersonAddress.fromMap(map['location']),
       email: map['email'],
       gender: gender,
-      login: LoginInfo.frommap(map['login']),
-      dateOfBirthday: DateOfBirthday.frommap(map['dob']),
-      registered: RegistrationInfo.frommap(map['registered']),
+      login: LoginInfo.fromMap(map['login']),
+      dateOfBirthday: DateOfBirthday.fromMap(map['dob']),
+      registered: RegistrationInfo.fromMap(map['registered']),
       phone: map['phone'],
       cell: map['cell'],
-      identifier: PersonIdentifier.frommap(map['id']),
+      identifier: PersonIdentifier.fromMap(map['id']),
       profileImage: map['picture']['large'],
       naturallity: map['nat'],
+      usedSeed: '',
     );
   }
 
-  Map<String, dynamic> tomap() => {
+  factory PersonModel.fromSavedMap(Map<String, dynamic> map) {
+    return PersonModel(
+      id: map['id'],
+      name: PersonName.fromMap(map['name']),
+      address: PersonAddress.fromSavedMap(map['address']),
+      email: map['email'],
+      gender: map['gender'] == 'female' ? PersonGender.female : PersonGender.male,
+      login: LoginInfo.fromMap(map['login']),
+      dateOfBirthday: DateOfBirthday.fromMap(map['dateOfBirthday']),
+      registered: RegistrationInfo.fromMap(map['registered']),
+      phone: map['phone'],
+      cell: map['cell'],
+      identifier: PersonIdentifier.fromMap(map['identifier']),
+      profileImage: map['profileImage'],
+      naturallity: map['naturallity'],
+      usedSeed: map['usedSeed'],
+    );
+  }
+
+  Map<String, dynamic> toMap() => {
     'id': id,
-    'name': name.tomap(),
-    'address': address.tomap(),
+    'name': name.toMap(),
+    'address': address.toMap(),
     'email': email,
-    'login': login.tomap(),
-    'dateOfBirthday': dateOfBirthday.tomap(),
-    'registered': registered.tomap(),
+    'login': login.toMap(),
+    'dateOfBirthday': dateOfBirthday.toMap(),
+    'registered': registered.toMap(),
+    'gender': gender.name,
     'phone': phone,
     'cell': cell,
-    'identifier': identifier.tomap(),
+    'identifier': identifier.toMap(),
     'profileImage': profileImage,
+    'naturallity': naturallity,
+    'usedSeed': usedSeed,
   };
 
-  factory Person.empty() {
-    return Person(
+  factory PersonModel.empty() {
+    return PersonModel(
       id: '',
       name: PersonName.empty(),
       address: PersonAddress.empty(),
@@ -92,6 +117,11 @@ class Person {
       identifier: PersonIdentifier(name: ''),
       profileImage: '',
       naturallity: '',
+      usedSeed: '',
     );
+  }
+
+  void addSeed(String seed) {
+    usedSeed = seed;
   }
 }

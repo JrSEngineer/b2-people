@@ -24,7 +24,16 @@ class PersonAddress {
     postcode: map['postcode'].toString(),
   );
 
-  Map<String, dynamic> tomap() => {
+  factory PersonAddress.fromSavedMap(Map<String, dynamic> map) => PersonAddress(
+    streetName: map['streetName'],
+    streetNumber: map['streetNumber'],
+    city: map['city'],
+    state: map['state'],
+    country: map['country'],
+    postcode: map['postcode'].toString(),
+  );
+
+  Map<String, dynamic> toMap() => {
     'streetName': streetName,
     'streetNumber': streetNumber,
     'city': city,

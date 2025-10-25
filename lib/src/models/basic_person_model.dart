@@ -41,6 +41,26 @@ class BasicPersonModel {
     );
   }
 
+  factory BasicPersonModel.fromSavedMap(Map<String, dynamic> map) {
+    final genderStringValue = map['gender'];
+
+    final gender = switch (genderStringValue) {
+      'female' => PersonGender.female,
+      'male' => PersonGender.male,
+      _ => PersonGender.female,
+    };
+
+    return BasicPersonModel(
+      id: map['id'],
+      usedSeed: map['usedSeed'],
+      fullName: '${map['name']['first']} ${map['name']['last']}',
+      gender: gender,
+      email: map['email'],
+      naturallity: map['naturallity'],
+      profileImage: map['profileImage'],
+    );
+  }
+
   void addSeed(String seed) {
     usedSeed = seed;
   }

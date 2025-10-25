@@ -1,14 +1,16 @@
 import 'package:b2_people/src/data/interfaces/ihome_repository.dart';
 import 'package:b2_people/src/models/basic_person_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 
 class HomeRepositoryImpl implements IHomeRepository {
-  HomeRepositoryImpl(this._dio);
+  HomeRepositoryImpl(this._dio, this._firestore);
 
   final Dio _dio;
+  final FirebaseFirestore _firestore;
 
   @override
-  Future<(List<BasicPersonModel>?, String?)> getUsers(String seed, int page, int results) async {
+  Future<(List<BasicPersonModel>?, String?)> getPersons(String seed, int page, int results) async {
     try {
       final List<BasicPersonModel> usersList = [];
 
@@ -18,9 +20,8 @@ class HomeRepositoryImpl implements IHomeRepository {
       for (var item in users) {
         var userMap = item as Map<String, dynamic>;
         final user = BasicPersonModel.fromMap(userMap);
-        final usedSeed = response.data['info']['seed'] as String;
 
-        user.addSeed(usedSeed);
+        user.addSeed(seed);
 
         usersList.add(user);
       }
@@ -30,6 +31,26 @@ class HomeRepositoryImpl implements IHomeRepository {
       return (null, 'Ops! Algum erro ocorreu durante a busca.');
     } catch (e) {
       return (null, 'Um erro inesperado ocorreu.');
+    }
+  }
+
+  @override
+  Future<(List<BasicPersonModel>?, String?)> getSavedPersons() async {
+    try {
+      final List<BasicPersonModel> preferedUsers = [];
+
+      final favoriteesCollection = await _firestore.collection('base').get();
+      final preferedProfilesDocs = favoriteesCollection.docs.toList();
+
+      for (var user in preferedProfilesDocs) {
+        final userMap = user.data();
+        final preferedUser = BasicPersonModel.fromSavedMap(userMap);
+        preferedUsers.add(preferedUser);
+      }
+
+      return (preferedUsers, null);
+    } catch (e) {
+      return (null, 'Erro ao obter lista de perfis favoritos.');
     }
   }
 }
