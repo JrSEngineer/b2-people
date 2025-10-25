@@ -1,4 +1,5 @@
 import 'package:b2_people/src/view_models/auth/auth_controller.dart';
+import 'package:b2_people/src/view_models/home/home_controller.dart';
 import 'package:b2_people/src/view_models/users/users_controller.dart';
 import 'package:b2_people/src/views/overlays/app_dialog.dart';
 import 'package:b2_people/src/views/widgets/prefered_user_tile.dart';
@@ -14,6 +15,7 @@ class FavoritesPage extends StatefulWidget {
 
 class _FavoritesPageState extends State<FavoritesPage> {
   final _authController = Modular.get<AuthController>();
+  final _homeController = Modular.get<HomeController>();
   final _usersController = Modular.get<UsersController>();
 
   @override

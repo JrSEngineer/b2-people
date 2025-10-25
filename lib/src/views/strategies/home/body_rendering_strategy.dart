@@ -50,6 +50,14 @@ class BodyRenderingStrategy implements HomeRenderingStrategy {
             ),
           ),
           centerTitle: true,
+          actions: [
+            IconButton(
+              onPressed: () {
+                _homeController.ticker.value.isActive ? _homeController.stopProgressiveFetching() : _homeController.startProgressiveFetching();
+              },
+              icon: Icon(_homeController.ticker.value.isActive ? Icons.pause : Icons.play_arrow_outlined),
+            ),
+          ],
         ),
         body: Container(
           height: MediaQuery.sizeOf(context).height,
@@ -61,11 +69,22 @@ class BodyRenderingStrategy implements HomeRenderingStrategy {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Usuários',
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
+              Row(
+                spacing: 24,
+                children: [
+                  Text(
+                    'Usuários',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  Text(
+                    '${_homeController.usersList.length}',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
               ),
               Expanded(
                 child: ListView.builder(
@@ -73,47 +92,40 @@ class BodyRenderingStrategy implements HomeRenderingStrategy {
                   controller: _homeController.scrollController,
                   physics: const BouncingScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: _homeController.usersList.length + 1,
+                  itemCount: _homeController.usersList.length,
                   itemBuilder: (_, i) {
-                    if (i < _homeController.usersList.length) {
-                      final user = _homeController.usersList[i];
+                    final user = _homeController.usersList[i];
 
-                      return UserTile(
-                        user: user,
-                        onTap: () {
-                          Modular.to.pushNamed('../users/', arguments: user);
-                        },
-                        key: const Key('user_tile'),
-                      );
-                    } else {
-                      if (_homeController.usersList.isEmpty) {
-                        return Center(
-                          child: Column(
-                            children: [
-                              Container(
-                                height: MediaQuery.sizeOf(context).width * 0.6,
-                                width: MediaQuery.sizeOf(context).width * 0.6,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  image: DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: AssetImage(
-                                      'assets/images/no-users-image.png',
+                    return _homeController.usersList.isNotEmpty
+                        ? UserTile(
+                            user: user,
+                            onTap: () {
+                              Modular.to.pushNamed('../users/', arguments: user);
+                            },
+                            key: const Key('user_tile'),
+                          )
+                        : Center(
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: MediaQuery.sizeOf(context).width * 0.6,
+                                  width: MediaQuery.sizeOf(context).width * 0.6,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100),
+                                    image: DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: AssetImage(
+                                        'assets/images/no-users-image.png',
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Text(
-                                'Sem Usuários no momento...',
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
+                                Text(
+                                  'Sem Usuários no momento...',
+                                ),
+                              ],
+                            ),
+                          );
                   },
                 ),
               ),
@@ -126,7 +138,7 @@ class BodyRenderingStrategy implements HomeRenderingStrategy {
             Modular.to.pushNamed('../users/favorites');
           },
           child: Icon(
-            Icons.star,
+            Icons.storage,
             color: Colors.white,
           ),
         ),

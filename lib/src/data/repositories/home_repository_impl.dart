@@ -1,5 +1,5 @@
 import 'package:b2_people/src/data/interfaces/ihome_repository.dart';
-import 'package:b2_people/src/models/user_model.dart';
+import 'package:b2_people/src/models/basic_person_model.dart';
 import 'package:dio/dio.dart';
 
 class HomeRepositoryImpl implements IHomeRepository {
@@ -8,16 +8,16 @@ class HomeRepositoryImpl implements IHomeRepository {
   final Dio _dio;
 
   @override
-  Future<(List<UserModel>?, String?)> getUsers(String seed, int page, int results) async {
+  Future<(List<BasicPersonModel>?, String?)> getUsers(String seed, int page, int results) async {
     try {
-      final List<UserModel> usersList = [];
+      final List<BasicPersonModel> usersList = [];
 
-      final response = await _dio.get('https://randomuser.me/api/?page=$page&results=$results&seed=$seed');
+      final response = await _dio.get('https://randomuser.me/api/?page=$page&results=$results&seed=$seed&inc=login,name,gender,email,nat,picture');
       final users = response.data['results'] as List;
 
       for (var item in users) {
         var userMap = item as Map<String, dynamic>;
-        final user = UserModel.fromMap(userMap);
+        final user = BasicPersonModel.fromMap(userMap);
 
         usersList.add(user);
       }

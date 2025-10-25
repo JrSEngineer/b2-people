@@ -1,6 +1,6 @@
 import 'package:b2_people/src/data/interfaces/ihome_repository.dart';
 import 'package:b2_people/src/data/repositories/home_repository_impl.dart';
-import 'package:b2_people/src/models/user_model.dart';
+import 'package:b2_people/src/models/basic_person_model.dart';
 import 'package:b2_people/src/view_models/home/home_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -26,7 +26,7 @@ void main() {
       test(
         'fail with DioException',
         () async {
-          when(() => repository.getUsers('myusers', 1, 20)).thenAnswer((_) async => (<UserModel>[], 'Ops! Algum erro ocorreu durante a busca.'));
+          when(() => repository.getUsers(any(), any(), any())).thenAnswer((_) async => (<BasicPersonModel>[], 'Ops! Algum erro ocorreu durante a busca.'));
 
           await controller.fetchUsers();
 
@@ -36,7 +36,7 @@ void main() {
       test(
         'fail with different kind of Exception',
         () async {
-          when(() => repository.getUsers('myusers', 1, 20)).thenAnswer((_) async => (<UserModel>[], 'Um erro inesperado ocorreu.'));
+          when(() => repository.getUsers(any(), any(), any())).thenAnswer((_) async => (<BasicPersonModel>[], 'Um erro inesperado ocorreu.'));
 
           await controller.fetchUsers();
 
@@ -46,13 +46,13 @@ void main() {
       test(
         'pass successfully filling up users list',
         () async {
-          when(() => repository.getUsers('myusers', 1, 20)).thenAnswer((_) async => (usersList, null));
+          when(() => repository.getUsers(any(), any(), any())).thenAnswer((_) async => (usersList, null));
 
           await controller.fetchUsers();
 
           expect(controller.usersList.isNotEmpty, equals(true));
           expect(controller.usersList.length, equals(2));
-          expect(controller.usersList.first, isA<UserModel>());
+          expect(controller.usersList.first, isA<BasicPersonModel>());
         },
       );
     },

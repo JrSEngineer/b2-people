@@ -1,7 +1,9 @@
 import 'package:b2_people/src/models/address_model.dart';
+import 'package:b2_people/src/models/basic_person_model.dart';
 import 'package:b2_people/src/models/prefered_user_model.dart';
 import 'package:b2_people/src/models/profile_model.dart';
 import 'package:b2_people/src/models/user_model.dart';
+import 'package:uuid/uuid.dart';
 
 final userMapsResultsMock = {
   "results": [
@@ -97,6 +99,24 @@ final user1Mock = UserModel(
   ),
 );
 
+final basicUser = BasicPersonModel(
+  id: Uuid().v4(),
+  fullName: 'Robert Jenkins',
+  gender: UserGender.male,
+  email: 'robert.jenkins@example.com',
+  naturallity: 'US',
+  profileImage: 'https://randomuser.me/api/portraits/men/75.jpg',
+);
+
+final basicUser1 = BasicPersonModel(
+  id: Uuid().v4(),
+  fullName: 'Laura Stevens',
+  gender: UserGender.female,
+  email: 'laura.stevens@example.com',
+  naturallity: 'US',
+  profileImage: 'https://randomuser.me/api/portraits/women/68.jpg',
+);
+
 final user2Mock = UserModel(
   id: 'e53f7c1a-1472-4a79-a8f0-d83b82e81a2c',
   fullName: 'Robert Jenkins',
@@ -117,7 +137,7 @@ final user2Mock = UserModel(
   ),
 );
 
-final usersList = [user1Mock, user2Mock];
+final usersList = [basicUser, basicUser1];
 
 final preferedUser = PreferedUserModel(
   id: 'user_id',

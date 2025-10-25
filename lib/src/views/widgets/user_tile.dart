@@ -1,3 +1,4 @@
+import 'package:b2_people/src/models/basic_person_model.dart';
 import 'package:b2_people/src/models/user_model.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ class UserTile extends StatelessWidget {
     super.key,
   });
 
-  final UserModel user;
+  final BasicPersonModel user;
   final Function()? onTap;
 
   @override
@@ -30,7 +31,7 @@ class UserTile extends StatelessWidget {
           image: DecorationImage(
             fit: BoxFit.fill,
             image: NetworkImage(
-              user.profile.profileImage,
+              user.profileImage,
             ),
           ),
         ),
@@ -39,10 +40,10 @@ class UserTile extends StatelessWidget {
         user.fullName,
       ),
       subtitle: Text(
-        user.profile.email,
+        user.email,
       ),
       trailing: CountryFlag.fromCountryCode(
-        user.address.naturallity,
+        user.naturallity,
         theme: const ImageTheme(
           height: 24,
           width: 30,

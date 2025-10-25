@@ -1,5 +1,5 @@
-import 'package:b2_people/src/models/user_model.dart';
+import 'package:b2_people/src/models/basic_person_model.dart';
 
 abstract interface class IHomeRepository {
-  Future<(List<UserModel>?, String?)> getUsers(String seed, int page, int results);
+  Future<(List<BasicPersonModel>?, String?)> getUsers(String seed, int page, int results);
 }

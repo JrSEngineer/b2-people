@@ -20,9 +20,6 @@ class LoadingRenderingStrategy implements HomeRenderingStrategy {
       body: SizedBox(
         height: MediaQuery.sizeOf(context).height,
         width: MediaQuery.sizeOf(context).width,
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
       ),
     );
   }

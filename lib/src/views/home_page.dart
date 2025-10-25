@@ -23,10 +23,9 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _authController.isOnline.addListener(_authenticationListenable);
-    _homeController.scrollController.addListener(_homeController.onScroll);
     _homeController.error.addListener(_usersFetchingErrorListenable);
 
-    _homeController.fetchUsers();
+    _homeController.startProgressiveFetching();
   }
 
   void _authenticationListenable() {
@@ -70,8 +69,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     _authController.isOnline.removeListener(_authenticationListenable);
-    _homeController.scrollController.removeListener(_homeController.onScroll);
     _homeController.error.removeListener(_usersFetchingErrorListenable);
+    _homeController.ticker.value.dispose();
     super.dispose();
   }
 }

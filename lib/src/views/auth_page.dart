@@ -66,7 +66,7 @@ class _AuthPageState extends State<AuthPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Olá,\nBoas vindas!',
+                    'Olá,\nSeja bem-vindo(a)!',
                     style: Theme.of(context).textTheme.displaySmall,
                   ),
                   Text(
