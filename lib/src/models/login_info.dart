@@ -7,12 +7,12 @@ class LoginInfo {
     required this.username,
   });
 
-  factory LoginInfo.frommap(Map<String, dynamic> map) => LoginInfo(
+  factory LoginInfo.fromMap(Map<String, dynamic> map) => LoginInfo(
     uuid: map['uuid'],
     username: map['username'],
   );
 
-  Map<String, dynamic> tomap() => {
+  Map<String, dynamic> toMap() => {
     'uuid': uuid,
     'username': username,
   };

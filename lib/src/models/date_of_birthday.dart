@@ -7,12 +7,12 @@ class DateOfBirthday {
     required this.age,
   });
 
-  factory DateOfBirthday.frommap(Map<String, dynamic> map) => DateOfBirthday(
+  factory DateOfBirthday.fromMap(Map<String, dynamic> map) => DateOfBirthday(
     date: DateTime.parse(map['date']),
     age: map['age'],
   );
 
-  Map<String, dynamic> tomap() => {
+  Map<String, dynamic> toMap() => {
     'date': date.toIso8601String(),
     'age': age,
   };

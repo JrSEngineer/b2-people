@@ -9,13 +9,13 @@ class PersonName {
     required this.last,
   });
 
-  factory PersonName.frommap(Map<String, dynamic> map) => PersonName(
+  factory PersonName.fromMap(Map<String, dynamic> map) => PersonName(
     title: map['title'],
     first: map['first'],
     last: map['last'],
   );
 
-  Map<String, dynamic> tomap() => {
+  Map<String, dynamic> toMap() => {
     'title': title,
     'first': first,
     'last': last,

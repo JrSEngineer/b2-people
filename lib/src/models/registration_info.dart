@@ -7,12 +7,12 @@ class RegistrationInfo {
     required this.age,
   });
 
-  factory RegistrationInfo.frommap(Map<String, dynamic> map) => RegistrationInfo(
+  factory RegistrationInfo.fromMap(Map<String, dynamic> map) => RegistrationInfo(
     date: DateTime.parse(map['date']),
     age: map['age'],
   );
 
-  Map<String, dynamic> tomap() => {
+  Map<String, dynamic> toMap() => {
     'date': date.toIso8601String(),
     'age': age,
   };
