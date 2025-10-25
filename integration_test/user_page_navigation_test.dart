@@ -6,8 +6,9 @@ void main() {
   testWidgets(
     'App should select an user and navigate to user page.',
     (tester) async {
-      app.main();
-      await tester.pumpAndSettle(const Duration(seconds: 5));
+      await app.main();
+
+      await tester.pumpAndSettle(const Duration(seconds: 3));
 
       expect(find.byKey(const Key('auth_page')), findsOneWidget);
 
@@ -19,17 +20,31 @@ void main() {
 
       await tester.pump();
 
-      await tester.pumpAndSettle(const Duration(seconds: 8));
+      await tester.pump(const Duration(seconds: 12));
 
       await tester.pump();
 
       expect(find.byKey(const Key('home_page')), findsOneWidget);
 
+      await tester.pump(const Duration(seconds: 5));
+
+      await tester.pumpAndSettle();
+
+      final tickerControllerButton = find.byIcon(Icons.pause);
+
+      await tester.pump(const Duration(seconds: 5));
+
+      await tester.tap(tickerControllerButton);
+
+      await tester.pumpAndSettle();
+
       final firstUserTile = find.byKey(const Key('user_tile')).first;
 
       await tester.tap(firstUserTile);
 
-      await tester.pumpAndSettle(const Duration(seconds: 2));
+      await tester.pump();
+
+      await tester.pump(const Duration(seconds: 1));
 
       expect(find.byKey(const Key('user_page')), findsOneWidget);
     },

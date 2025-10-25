@@ -52,6 +52,7 @@ class BodyRenderingStrategy implements HomeRenderingStrategy {
           centerTitle: true,
           actions: [
             IconButton(
+              key: const Key('ticker_button'),
               onPressed: () {
                 _homeController.ticker.value.isActive ? _homeController.stopProgressiveFetching() : _homeController.startProgressiveFetching();
               },

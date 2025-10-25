@@ -1,16 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:b2_people/src/models/basic_person_model.dart';
 import 'package:b2_people/src/models/prefered_user_model.dart';
-import 'package:b2_people/src/models/user_model.dart';
 import 'package:b2_people/src/view_models/auth/auth_controller.dart';
 import 'package:b2_people/src/view_models/users/users_controller.dart';
-import 'package:b2_people/src/views/overlays/user_info_bottom_sheet.dart';
 import 'package:b2_people/src/views/strategies/users/user_rendering_strategy.dart';
 import 'package:flutter/material.dart';
 
 class FemaleProfileStrategy implements UserProfileStrategy {
   FemaleProfileStrategy(this.user, this.authController, this.usersController);
 
-  final UserModel user;
+  final BasicPersonModel user;
   final AuthController authController;
   final UsersController usersController;
 
@@ -55,7 +54,7 @@ class FemaleProfileStrategy implements UserProfileStrategy {
                       ),
                       child: Center(
                         child: CircleAvatar(
-                          backgroundImage: NetworkImage(user.profile.profileImage),
+                          backgroundImage: NetworkImage(user.profileImage),
                           radius: MediaQuery.sizeOf(context).width * 0.2,
                         ),
                       ),
@@ -68,19 +67,19 @@ class FemaleProfileStrategy implements UserProfileStrategy {
                       ),
                     ),
                     Text(
-                      user.profile.email,
+                      user.email,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     ),
-                    Text(
-                      user.profile.profileUsername,
+                    /*   Text(
+                      user.profileUsername,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
-                    ),
+                    ), */
                   ],
                 ),
                 Row(
@@ -106,9 +105,9 @@ class FemaleProfileStrategy implements UserProfileStrategy {
                           final markedUser = PreferedUserModel(
                             id: user.id,
                             fullName: user.fullName,
-                            email: user.profile.email,
+                            email: user.email,
                             gender: user.gender,
-                            profileImage: user.profile.profileImage,
+                            profileImage: user.profileImage,
                             preferenceOwner: authController.userEmail,
                           );
 
@@ -126,7 +125,7 @@ class FemaleProfileStrategy implements UserProfileStrategy {
                 Spacer(),
                 ElevatedButton(
                   key: const Key('bottom_sheet_button'),
-                  onPressed: () => userInfoBottomSheet(context, user),
+                  onPressed: () {},
                   child: Text(
                     'Mais Informações',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
