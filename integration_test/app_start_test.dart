@@ -10,6 +10,8 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
       expect(find.byKey(const Key('auth_page')), findsOneWidget);
+
+      await tester.pumpAndSettle(const Duration(seconds: 3));
     },
   );
 }

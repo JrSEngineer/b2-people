@@ -7,16 +7,26 @@ Usando este modelo arquitetural serão realizadas as seguintes modificações em
 Introdução à Orientação a Objetos, com uso de abstrações, encapsulamentos e herança, além da criação das camadas da arquitetura:
 
 ## Models
-    User
-    Profile
-    Address
+    BasicPersonModel
+    DateOfBrithday
+    LoginInfo
+    PersonAddress
+    PersonIdentifier
+    PersonModel
+    PersonName
+    RegistrationInfo
     
 ## Views
+    AuthPage
+    FavoritesPage
     HomePage
-    UserPage
+    PersonPage
+    SplashPage
 
 ## ViewModels
+    AuthController
     HomeController
+    PersonController
 
 ## Data 
     Camada para consumo e tratamento de dados externos (API, storage).
@@ -45,7 +55,7 @@ Introdução à Orientação a Objetos, com uso de abstrações, encapsulamentos
 - Testes de widget;
 - Testes E2E.
 
-#### :test_tube: Cobertura de testes em 92.2%
+#### :test_tube: Cobertura de testes em 90.4%
 
 #### Packages adicionados:
     dio: ^5.9.0
