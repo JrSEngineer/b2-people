@@ -11,7 +11,7 @@ class HomeController extends ChangeNotifier {
 
   final IHomeRepository _repository;
 
-  List<BasicPersonModel> usersList = [];
+  List<BasicPersonModel> basicPersonsList = [];
   bool isLoading = false;
 
   int page = 1;
@@ -34,7 +34,7 @@ class HomeController extends ChangeNotifier {
     ),
   );
 
-  void startProgressiveFetching() async {
+  Future<void> startProgressiveFetching() async {
     await fetchUsers();
     ticker.value.start();
   }
@@ -48,16 +48,17 @@ class HomeController extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    if (usersList.isEmpty) {
+    if (basicPersonsList.isEmpty) {
       final (savedPerson, _) = await _repository.getSavedPersons();
 
-      if (savedPerson != null) {
-        usersList.addAll(savedPerson);
+      if (savedPerson != null && savedPerson.isNotEmpty) {
+        basicPersonsList.addAll(savedPerson);
+
+        await Future.delayed(const Duration(seconds: 5));
       }
+
       isLoading = false;
       notifyListeners();
-
-      await Future.delayed(const Duration(seconds: 5));
     }
 
     final seed = Uuid().v4();
@@ -71,9 +72,15 @@ class HomeController extends ChangeNotifier {
       return;
     }
 
-    usersList.addAll(users!);
+    basicPersonsList.addAll(users!);
 
     isLoading = false;
     notifyListeners();
+  }
+
+  Future<void> refreshUsersList() async {
+    basicPersonsList.clear();
+
+    await fetchUsers();
   }
 }

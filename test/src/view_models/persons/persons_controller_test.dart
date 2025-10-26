@@ -65,7 +65,7 @@ void main() {
           final accountEmail = 'ownerpreference@email.com';
           when(() => repository.markPersonAsPrefered(accountEmail, personMock)).thenAnswer((_) async => (false));
 
-          await controller.markUserAsPrefered(accountEmail, personMock);
+          await controller.markPersonAsPrefered(accountEmail, personMock);
 
           expect(controller.error.value, isNotEmpty);
           expect(controller.error.value, equals('Erro ao favoritar perfil de usuário.'));
@@ -79,7 +79,7 @@ void main() {
           final accountEmail = 'ownerpreference@email.com';
           when(() => repository.markPersonAsPrefered(accountEmail, personMock)).thenAnswer((_) async => (true));
 
-          await controller.markUserAsPrefered(accountEmail, personMock);
+          await controller.markPersonAsPrefered(accountEmail, personMock);
 
           expect(controller.success.value, isNotEmpty);
           expect(controller.success.value, equals('Perfil de usuário marcado como favorito.'));
@@ -134,22 +134,22 @@ void main() {
 
           expect(controller.error.value, isNotEmpty);
           expect(controller.error.value, equals('Erro ao obter perfis marcados como favoritos.'));
-          expect(controller.preferedUsersList, isEmpty);
+          expect(controller.preferedPersonsList, isEmpty);
         },
       );
 
       test(
-        'retrieve favorite profiles successfully (adds up fetched users to preferedUsersList)',
+        'retrieve favorite profiles successfully (adds up fetched users to preferedPersonsList)',
         () async {
           when(() => repository.getPreferedPersons(any())).thenAnswer((_) async => (personModelList, null));
 
           await controller.getPreferedPersons('user@email.com');
 
           expect(controller.error.value, isEmpty);
-          expect(controller.preferedUsersList, isNotEmpty);
-          expect(controller.preferedUsersList.length, equals(2));
-          expect(controller.preferedUsersList, isA<List<PersonModel>>());
-          expect(controller.preferedUsersList.first, isA<PersonModel>());
+          expect(controller.preferedPersonsList, isNotEmpty);
+          expect(controller.preferedPersonsList.length, equals(2));
+          expect(controller.preferedPersonsList, isA<List<PersonModel>>());
+          expect(controller.preferedPersonsList.first, isA<PersonModel>());
         },
       );
     },

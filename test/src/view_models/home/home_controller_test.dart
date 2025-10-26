@@ -53,9 +53,9 @@ void main() {
 
           await controller.fetchUsers();
 
-          expect(controller.usersList.isNotEmpty, equals(true));
-          expect(controller.usersList.length, equals(2));
-          expect(controller.usersList.first, isA<BasicPersonModel>());
+          expect(controller.basicPersonsList.isNotEmpty, equals(true));
+          expect(controller.basicPersonsList.length, equals(2));
+          expect(controller.basicPersonsList.first, isA<BasicPersonModel>());
         },
       );
     },

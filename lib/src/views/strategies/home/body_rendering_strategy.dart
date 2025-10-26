@@ -79,7 +79,7 @@ class BodyRenderingStrategy implements HomeRenderingStrategy {
                     ),
                   ),
                   Text(
-                    '${_homeController.usersList.length}',
+                    '${_homeController.basicPersonsList.length}',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
@@ -92,15 +92,15 @@ class BodyRenderingStrategy implements HomeRenderingStrategy {
                   controller: _homeController.scrollController,
                   physics: const BouncingScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: _homeController.usersList.length,
+                  itemCount: _homeController.basicPersonsList.length,
                   itemBuilder: (_, i) {
-                    final user = _homeController.usersList[i];
+                    final user = _homeController.basicPersonsList[i];
 
-                    return _homeController.usersList.isNotEmpty
+                    return _homeController.basicPersonsList.isNotEmpty
                         ? UserTile(
                             user: user,
                             onTap: () {
-                              Modular.to.pushNamed('../persons/${user.usedSeed}');
+                              Modular.to.pushNamed('persons/${user.usedSeed}');
                             },
                             key: const Key('user_tile'),
                           )
@@ -135,7 +135,7 @@ class BodyRenderingStrategy implements HomeRenderingStrategy {
 
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Modular.to.pushNamed('../persons/favorites');
+            Modular.to.pushNamed('persons/favorites');
           },
           child: Icon(
             Icons.storage,

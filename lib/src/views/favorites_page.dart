@@ -1,4 +1,5 @@
 import 'package:b2_people/src/view_models/auth/auth_controller.dart';
+import 'package:b2_people/src/view_models/home/home_controller.dart';
 import 'package:b2_people/src/view_models/persons/persons_controller.dart';
 import 'package:b2_people/src/views/overlays/app_dialog.dart';
 import 'package:b2_people/src/views/widgets/prefered_user_tile.dart';
@@ -14,24 +15,25 @@ class FavoritesPage extends StatefulWidget {
 
 class _FavoritesPageState extends State<FavoritesPage> {
   final _authController = Modular.get<AuthController>();
-  final _usersController = Modular.get<PersonsController>();
+  final _personsController = Modular.get<PersonsController>();
+  final _homeController = Modular.get<HomeController>();
 
   @override
   void initState() {
     super.initState();
-    _usersController.success.addListener(_profileMarkListenable);
+    _personsController.success.addListener(_profileMarkListenable);
 
     final accountEmail = _authController.userEmail;
-    _usersController.getPreferedPersons(accountEmail);
+    _personsController.getPreferedPersons(accountEmail);
   }
 
   _profileMarkListenable() {
-    if (_usersController.success.value.isNotEmpty) {
+    if (_personsController.success.value.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Colors.green.shade900,
           content: Text(
-            _usersController.success.value,
+            _personsController.success.value,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white),
           ),
         ),
@@ -55,7 +57,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
         centerTitle: true,
       ),
       body: AnimatedBuilder(
-        animation: _usersController,
+        animation: _personsController,
         builder: (_, __) {
           return Container(
             height: MediaQuery.sizeOf(context).height,
@@ -73,7 +75,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                if (_usersController.preferedUsersList.isNotEmpty)
+                if (_personsController.preferedPersonsList.isNotEmpty)
                   Expanded(
                     child: ListView.separated(
                       key: const Key('user_list'),
@@ -82,40 +84,50 @@ class _FavoritesPageState extends State<FavoritesPage> {
                       separatorBuilder: (context, index) {
                         return SizedBox(height: 12);
                       },
-                      itemCount: _usersController.preferedUsersList.length,
+                      itemCount: _personsController.preferedPersonsList.length,
                       itemBuilder: (_, i) {
-                        final user = _usersController.preferedUsersList[i];
+                        final person = _personsController.preferedPersonsList[i];
 
-                        return PreferedUserTile(
-                          user: user,
+                        return PreferedPersonTile(
+                          person: person,
+                          trailingWidget: IconButton(
+                            onPressed: () {
+                              showAppDialog(
+                                context,
+                                'Remover da Lista',
+                                'Deseja realmente remover o perfil atual da lista de favoritos?',
+                                [
+                                  TextButton(
+                                    onPressed: () async {
+                                      Navigator.pop(context);
+                                      await _personsController.removePreference(_authController.userEmail, person);
+
+                                      await _homeController.refreshUsersList();
+                                    },
+                                    child: Text('SIM', style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('NÃO'),
+                                  ),
+                                ],
+                              );
+                            },
+                            icon: Icon(
+                              Icons.delete,
+                            ),
+                          ),
                           onTap: () {
-                            showAppDialog(
-                              context,
-                              'Remover da Lista',
-                              'Deseja realmente remover o perfil atual da lista de favoritos?',
-                              [
-                                TextButton(
-                                  onPressed: () async {
-                                    Navigator.pop(context);
-                                    await _usersController.removePreference(_authController.userEmail, user);
-                                  },
-                                  child: Text('SIM', style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text('NÃO'),
-                                ),
-                              ],
-                            );
+                            Modular.to.pushNamed('../persons/${person.usedSeed}');
                           },
                           key: const Key('prefered_user_tile'),
                         );
                       },
                     ),
                   ),
-                if (_usersController.preferedUsersList.isEmpty)
+                if (_personsController.preferedPersonsList.isEmpty)
                   Center(
                     child: Column(
                       children: [
@@ -148,8 +160,36 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
   @override
   void dispose() {
-    _usersController.success.removeListener(_profileMarkListenable);
+    _personsController.success.removeListener(_profileMarkListenable);
 
     super.dispose();
   }
 }
+
+
+/* 
+
+onTap: () {
+                            showAppDialog(
+                              context,
+                              'Remover da Lista',
+                              'Deseja realmente remover o perfil atual da lista de favoritos?',
+                              [
+                                TextButton(
+                                  onPressed: () async {
+                                    Navigator.pop(context);
+                                    await _personsController.removePreference(_authController.userEmail, user);
+                                  },
+                                  child: Text('SIM', style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('NÃO'),
+                                ),
+                              ],
+                            );
+                          },
+
+*/

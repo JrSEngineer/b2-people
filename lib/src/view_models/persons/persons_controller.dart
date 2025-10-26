@@ -7,7 +7,7 @@ class PersonsController extends ChangeNotifier {
 
   final IPersonsRepository _repository;
 
-  List<PersonModel> preferedUsersList = [];
+  List<PersonModel> preferedPersonsList = [];
   ValueNotifier<int> profileMarks = ValueNotifier(0);
   bool isLoading = false;
   ValueNotifier<bool> hasBeenMarked = ValueNotifier(false);
@@ -18,6 +18,8 @@ class PersonsController extends ChangeNotifier {
   ValueNotifier<String> error = ValueNotifier('');
 
   Future<void> fetchPerson(String seed) async {
+    await Future.delayed(const Duration(milliseconds: 10));
+
     isLoading = true;
     notifyListeners();
 
@@ -36,11 +38,11 @@ class PersonsController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> markUserAsPrefered(String accountEmail, PersonModel user) async {
+  Future<void> markPersonAsPrefered(String accountEmail, PersonModel person) async {
     isLoading = true;
     notifyListeners();
 
-    final hasBeenMarkedAsPrefered = await _repository.markPersonAsPrefered(accountEmail, user);
+    final hasBeenMarkedAsPrefered = await _repository.markPersonAsPrefered(accountEmail, person);
 
     if (hasBeenMarkedAsPrefered) {
       success.value = 'Perfil de usuário marcado como favorito.';
@@ -56,11 +58,11 @@ class PersonsController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> removePreference(String accountEmail, PersonModel user) async {
+  Future<void> removePreference(String accountEmail, PersonModel person) async {
     isLoading = true;
     notifyListeners();
 
-    final hasPreferenceRemoved = await _repository.removePreference(accountEmail, user);
+    final hasPreferenceRemoved = await _repository.removePreference(accountEmail, person);
 
     if (hasPreferenceRemoved) {
       success.value = 'Preferência de perfil removida.';
@@ -69,6 +71,8 @@ class PersonsController extends ChangeNotifier {
       notifyListeners();
       return;
     }
+
+    preferedPersonsList.remove(person);
 
     error.value = 'Erro ao remover preferência.';
 
@@ -84,6 +88,9 @@ class PersonsController extends ChangeNotifier {
   Future<void> getPreferedPersons(String accountEmail) async {
     isLoading = true;
     notifyListeners();
+
+    preferedPersonsList.clear();
+
     final (preferedUsers, errorMessage) = await _repository.getPreferedPersons(accountEmail);
 
     if (errorMessage != null) {
@@ -94,7 +101,7 @@ class PersonsController extends ChangeNotifier {
       return;
     }
 
-    preferedUsersList.addAll(preferedUsers!);
+    preferedPersonsList.addAll(preferedUsers!);
 
     isLoading = false;
     notifyListeners();

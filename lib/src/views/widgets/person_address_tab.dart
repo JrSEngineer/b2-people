@@ -1,3 +1,4 @@
+import 'package:b2_people/src/models/person_gender.dart';
 import 'package:b2_people/src/models/person_model.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +15,10 @@ class PersonAddressTab extends StatefulWidget {
 class _PersonAddressTabState extends State<PersonAddressTab> {
   @override
   Widget build(BuildContext context) {
+    final genderColor = widget.person.gender == PersonGender.female ? Colors.pinkAccent : Colors.blueAccent;
+
     return Column(
       spacing: 48,
-      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CountryFlag.fromCountryCode(
@@ -34,7 +36,10 @@ class _PersonAddressTabState extends State<PersonAddressTab> {
           direction: Axis.horizontal,
           children: [
             Chip(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(40)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.circular(40),
+                side: BorderSide(color: genderColor),
+              ),
               label: Row(
                 spacing: 12,
                 mainAxisSize: MainAxisSize.min,
@@ -45,7 +50,10 @@ class _PersonAddressTabState extends State<PersonAddressTab> {
               ),
             ),
             Chip(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(40)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.circular(40),
+                side: BorderSide(color: genderColor),
+              ),
               label: Row(
                 spacing: 12,
                 mainAxisSize: MainAxisSize.min,
@@ -56,7 +64,10 @@ class _PersonAddressTabState extends State<PersonAddressTab> {
               ),
             ),
             Chip(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(40)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.circular(40),
+                side: BorderSide(color: genderColor),
+              ),
               label: Row(
                 spacing: 12,
                 mainAxisSize: MainAxisSize.min,
@@ -67,7 +78,10 @@ class _PersonAddressTabState extends State<PersonAddressTab> {
               ),
             ),
             Chip(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(40)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.circular(40),
+                side: BorderSide(color: genderColor),
+              ),
               label: Row(
                 spacing: 12,
                 mainAxisSize: MainAxisSize.min,
@@ -78,7 +92,10 @@ class _PersonAddressTabState extends State<PersonAddressTab> {
               ),
             ),
             Chip(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(40)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.circular(40),
+                side: BorderSide(color: genderColor),
+              ),
               label: Row(
                 spacing: 12,
                 mainAxisSize: MainAxisSize.min,
@@ -89,13 +106,72 @@ class _PersonAddressTabState extends State<PersonAddressTab> {
               ),
             ),
             Chip(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(40)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.circular(40),
+                side: BorderSide(color: genderColor),
+              ),
               label: Row(
                 spacing: 12,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(Icons.post_add_outlined, color: Colors.grey.shade900),
                   Text(widget.person.address.postcode, style: Theme.of(context).textTheme.bodyLarge),
+                ],
+              ),
+            ),
+            Chip(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.circular(40),
+                side: BorderSide(color: genderColor),
+              ),
+              label: Row(
+                spacing: 12,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.location_searching, color: Colors.grey.shade900),
+                  Text(widget.person.address.latitude, style: Theme.of(context).textTheme.bodyLarge),
+                ],
+              ),
+            ),
+            Chip(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.circular(40),
+                side: BorderSide(color: genderColor),
+              ),
+              label: Row(
+                spacing: 12,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.location_searching, color: Colors.grey.shade900),
+                  Text(widget.person.address.longitude, style: Theme.of(context).textTheme.bodyLarge),
+                ],
+              ),
+            ),
+            Chip(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.circular(40),
+                side: BorderSide(color: genderColor),
+              ),
+              label: Row(
+                spacing: 12,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.watch_later_outlined, color: Colors.grey.shade900),
+                  Text(widget.person.address.offset, style: Theme.of(context).textTheme.bodyLarge),
+                ],
+              ),
+            ),
+            Chip(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.circular(40),
+                side: BorderSide(color: genderColor),
+              ),
+              label: Row(
+                spacing: 12,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.description, color: Colors.grey.shade900),
+                  Text(widget.person.address.description, style: Theme.of(context).textTheme.bodyLarge),
                 ],
               ),
             ),

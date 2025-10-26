@@ -74,7 +74,7 @@ class FemaleProfileStrategy implements PersonProfileStrategy {
                       await usersController.removePreference(authController.userEmail, person);
                     }
                   : () async {
-                      await usersController.markUserAsPrefered(authController.userEmail, person);
+                      await usersController.markPersonAsPrefered(authController.userEmail, person);
                     },
               icon: Icon(displayIcon),
             ),

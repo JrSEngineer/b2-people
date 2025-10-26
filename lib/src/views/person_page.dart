@@ -17,18 +17,18 @@ class PersonPage extends StatefulWidget {
 
 class _PersonPageState extends State<PersonPage> {
   final _authController = Modular.get<AuthController>();
-  final _usersController = Modular.get<PersonsController>();
+  final _personsController = Modular.get<PersonsController>();
   String personId = '';
 
   Widget _body() {
     final userPageBody = PersonPageBody();
 
-    switch (_usersController.person.value.gender) {
+    switch (_personsController.person.value.gender) {
       case PersonGender.female:
-        userPageBody.setProfileStrategy(FemaleProfileStrategy(_usersController.person.value, _authController, _usersController));
+        userPageBody.setProfileStrategy(FemaleProfileStrategy(_personsController.person.value, _authController, _personsController));
         return userPageBody.renderFemaleProfile(context);
       case PersonGender.male:
-        userPageBody.setProfileStrategy(MaleProfileStrategy(_usersController.person.value, _authController, _usersController));
+        userPageBody.setProfileStrategy(MaleProfileStrategy(_personsController.person.value, _authController, _personsController));
         return userPageBody.renderMaleProfile(context);
     }
   }
@@ -37,29 +37,29 @@ class _PersonPageState extends State<PersonPage> {
   void initState() {
     super.initState();
 
-    _usersController.error.addListener(_errorMessageListenable);
-    _usersController.success.addListener(_profileMarkListenable);
+    _personsController.error.addListener(_errorMessageListenable);
+    _personsController.success.addListener(_profileMarkListenable);
 
-    _usersController.person.addListener(() async {
-      personId = _usersController.person.value.id;
+    _personsController.person.addListener(() async {
+      personId = _personsController.person.value.id;
 
-      await _usersController.getUserMarks(personId);
-      await _usersController.verifyUserMark(personId, _authController.userEmail);
+      await _personsController.getUserMarks(personId);
+      await _personsController.verifyUserMark(personId, _authController.userEmail);
     });
 
     final usedSeed = Modular.args.params['seed'];
 
-    _usersController.fetchPerson(usedSeed);
+    _personsController.fetchPerson(usedSeed);
   }
 
   _errorMessageListenable() {
-    if (_usersController.error.value.isNotEmpty) {
+    if (_personsController.error.value.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           duration: const Duration(seconds: 3),
           backgroundColor: Colors.red.shade800,
           content: Text(
-            _usersController.error.value,
+            _personsController.error.value,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white),
           ),
         ),
@@ -68,20 +68,20 @@ class _PersonPageState extends State<PersonPage> {
   }
 
   _profileMarkListenable() async {
-    if (_usersController.success.value.isNotEmpty) {
+    if (_personsController.success.value.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           duration: const Duration(seconds: 2),
           backgroundColor: Colors.green.shade900,
           content: Text(
-            _usersController.success.value,
+            _personsController.success.value,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white),
           ),
         ),
       );
 
-      await _usersController.getUserMarks(personId);
-      await _usersController.verifyUserMark(personId, _authController.userEmail);
+      await _personsController.getUserMarks(personId);
+      await _personsController.verifyUserMark(personId, _authController.userEmail);
     }
   }
 
@@ -89,8 +89,8 @@ class _PersonPageState extends State<PersonPage> {
   Widget build(BuildContext context) => AnimatedBuilder(
     animation: Listenable.merge(
       [
-        _usersController,
-        _usersController.hasBeenMarked,
+        _personsController,
+        _personsController.hasBeenMarked,
       ],
     ),
     builder: (_, __) {

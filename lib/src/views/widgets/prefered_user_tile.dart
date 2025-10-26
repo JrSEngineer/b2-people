@@ -2,25 +2,28 @@ import 'package:b2_people/src/models/person_gender.dart';
 import 'package:b2_people/src/models/person_model.dart';
 import 'package:flutter/material.dart';
 
-class PreferedUserTile extends StatelessWidget {
-  const PreferedUserTile({
-    required this.user,
+class PreferedPersonTile extends StatelessWidget {
+  const PreferedPersonTile({
+    required this.person,
     this.onTap,
+    this.trailingWidget,
     super.key,
   });
 
-  final PersonModel user;
+  final PersonModel person;
   final Function()? onTap;
+  final Widget? trailingWidget;
 
   @override
   Widget build(BuildContext context) {
-    final genderColor = switch (user.gender) {
+    final genderColor = switch (person.gender) {
       PersonGender.female => Colors.pinkAccent,
       PersonGender.male => Colors.blueAccent,
     };
 
     return ListTile(
       contentPadding: EdgeInsets.only(left: 12),
+      onTap: onTap,
       leading: Container(
         height: 36,
         width: 36,
@@ -30,23 +33,18 @@ class PreferedUserTile extends StatelessWidget {
           image: DecorationImage(
             fit: BoxFit.fill,
             image: NetworkImage(
-              user.profileImage,
+              person.profileImage,
             ),
           ),
         ),
       ),
       title: Text(
-        '${user.name.first} ${user.name.last}',
+        '${person.name.first} ${person.name.last}',
       ),
       subtitle: Text(
-        user.email,
+        person.email,
       ),
-      trailing: IconButton(
-        onPressed: onTap,
-        icon: Icon(
-          Icons.delete,
-        ),
-      ),
+      trailing: trailingWidget,
     );
   }
 }
